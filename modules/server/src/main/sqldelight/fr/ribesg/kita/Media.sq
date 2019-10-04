@@ -1,0 +1,20 @@
+
+CREATE TABLE media(
+
+    -- Generated unique id
+    id INTEGER AS Int PRIMARY KEY,
+    
+    -- The file associated with this media, if any
+    file TEXT,
+    
+    -- The title of this media
+    title TEXT NOT NULL,
+    
+    -- The description of this media, if any
+    description TEXT,
+    
+    -- Constraints
+    
+    FOREIGN KEY (file) REFERENCES file
+    
+);

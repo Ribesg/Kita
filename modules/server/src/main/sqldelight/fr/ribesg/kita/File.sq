@@ -1,0 +1,19 @@
+
+CREATE TABLE file(
+
+    -- Generated unique id
+    id INTEGER AS Int PRIMARY KEY,
+    
+    -- The last known name of the file
+    name TEXT NOT NULL,
+    
+    -- The current path of the file, if it is known and exists, null otherwise
+    path TEXT,
+    
+    -- The last known size of the file
+    size INTEGER NOT NULL,
+    
+    -- The last known hash of the file
+    hash TEXT NOT NULL
+    
+);
