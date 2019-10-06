@@ -42,7 +42,11 @@ kotlin {
                 val compileKotlinJs by tasks.getting(Kotlin2JsCompile::class)
                 val runDceKotlin by tasks.getting(KotlinJsDce::class)
                 dependsOn(runDceKotlin)
-                runDceKotlin.dceOptions.devMode = Build.isSnapshot
+                runDceKotlin.run {
+                    dceOptions {
+                        devMode = Build.isSnapshot
+                    }
+                }
                 doFirst {
                     copy {
                         from(runDceKotlin.destinationDir)

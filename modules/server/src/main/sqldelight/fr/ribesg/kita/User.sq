@@ -1,0 +1,28 @@
+
+CREATE TABLE user(
+
+    -- User id, a random UUID
+    id TEXT PRIMARY KEY,
+    
+    -- User login used in login/register forms
+    login TEXT UNIQUE NOT NULL,
+    
+    -- User display name, optional
+    displayName TEXT,
+    
+    -- User password salt
+    passwordSalt BLOB NOT NULL,
+    
+    -- User password hash
+    passwordHash BLOB NOT NULL
+
+);
+
+-- Index on the login field
+CREATE INDEX userLogin ON user(login);
+
+createUser:
+INSERT INTO user VALUES (?, ?, ?, ?, ?);
+
+getUserByLogin:
+SELECT * FROM user WHERE login = ?;

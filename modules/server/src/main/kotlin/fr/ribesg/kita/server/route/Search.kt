@@ -6,20 +6,21 @@ import fr.ribesg.kita.common.model.SearchResponse
 import fr.ribesg.kita.server.metadata.tmdb.TmdbApi
 import fr.ribesg.kita.server.metadata.tmdb.toMovie
 import io.ktor.application.call
+import io.ktor.locations.Location
+import io.ktor.locations.get
 import io.ktor.response.respond
 import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.util.getOrFail
 import org.koin.ktor.ext.inject
+
+@Location("/api/search")
+private data class SearchLocation(val query: String)
 
 fun Routing.search() {
 
     val tmdb: TmdbApi by inject()
 
-    get("/search") {
-        val query = call.parameters.getOrFail("query")
-        val movies = tmdb.searchMovie(query).map { tmdb.toMovie(it) }
-        call.respond(SearchResponse(movies))
+    get<SearchLocation> { (query) ->
+        call.respond(SearchResponse(tmdb.searchMovie(query).map { tmdb.toMovie(it) }))
     }
 
 } 

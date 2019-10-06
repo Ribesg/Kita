@@ -13,16 +13,16 @@ kotlin {
     sourceSets {
 
         getByName("commonMain").dependencies {
-            implementation(project(":modules:common"))
-            implementation(kotlin("stdlib-common"))
+            api(project(":modules:common"))
+            api(kotlin("stdlib-common"))
         }
 
         getByName("jvmMain").dependencies {
-            implementation(kotlin("stdlib-jdk8"))
+            api(kotlin("stdlib-jdk8"))
         }
 
         getByName("jsMain").dependencies {
-            implementation(kotlin("stdlib-js"))
+            api(kotlin("stdlib-js"))
         }
 
     }

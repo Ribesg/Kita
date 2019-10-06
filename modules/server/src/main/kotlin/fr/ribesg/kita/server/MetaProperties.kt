@@ -2,21 +2,29 @@ package fr.ribesg.kita.server
 
 import java.util.*
 
-object Meta {
-
+interface MetaProperties {
     val contact: String
+    val name: String
+    val uniqueBuildNumber: String
+    val version: String
+    val webClientJsFileName: String
+}
+
+class MetaPropertiesImpl : MetaProperties {
+
+    override val contact: String
         get() = properties.getProperty("contact")
 
-    val name: String
+    override val name: String
         get() = properties.getProperty("name")
 
-    val uniqueBuildNumber: String
+    override val uniqueBuildNumber: String
         get() = properties.getProperty("uniqueBuildNumber")
 
-    val version: String
+    override val version: String
         get() = properties.getProperty("version")
 
-    val webClientJsFileName: String
+    override val webClientJsFileName: String
         get() = properties.getProperty("webClientJsFileName")
 
     private val properties = Properties().apply {

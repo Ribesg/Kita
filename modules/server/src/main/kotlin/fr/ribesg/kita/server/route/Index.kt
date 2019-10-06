@@ -1,19 +1,22 @@
 package fr.ribesg.kita.server.route
 
-import fr.ribesg.kita.server.Meta
+import fr.ribesg.kita.server.MetaProperties
 import io.ktor.application.call
 import io.ktor.html.respondHtml
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlinx.html.*
+import org.koin.ktor.ext.inject
 
-fun Routing.index() = get("{...}") {
-    call.respondHtml {
-        head {
-            title("Kita ${Meta.version}")
-            style {
-                unsafe {
-                    +"""
+fun Routing.index() {
+    val meta by inject<MetaProperties>()
+    get("{...}") {
+        call.respondHtml {
+            head {
+                title("Kita ${meta.version}")
+                style {
+                    unsafe {
+                        +"""
                     html, body, #kita {
                         display: flex;
                         align-items: center;
@@ -36,15 +39,16 @@ fun Routing.index() = get("{...}") {
                         100% { transform: rotate(360deg); }
                     }
                     """.trimIndent()
+                    }
                 }
             }
-        }
-        body {
-            div {
-                id = "kita"
-                div("loader")
+            body {
+                div {
+                    id = "kita"
+                    div("loader")
+                }
+                script("text/javascript", "/assets/${meta.webClientJsFileName}", {})
             }
-            script("text/javascript", "/assets/${Meta.webClientJsFileName}", {})
         }
     }
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import fr.ribesg.kita.server.Meta
+import fr.ribesg.kita.server.MetaProperties
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.defaultRequest
@@ -25,14 +25,12 @@ interface MusicBrainzApi {
 
 }
 
-class MusicBrainzApiImpl() : MusicBrainzApi {
+class MusicBrainzApiImpl(
+    meta: MetaProperties
+) : MusicBrainzApi {
 
-    companion object {
-
-        private const val BASE_URL = "https://musicbrainz.org/ws/2"
-        private val USER_AGENT = "Kita ${Meta.version} ( ${Meta.contact} )"
-
-    }
+    private val baseUrl = "https://musicbrainz.org/ws/2"
+    private val userAgent = "Kita ${meta.version} ( ${meta.contact} )"
 
     @Suppress("EXPERIMENTAL_API_USAGE")
     private val http = HttpClient(CIO) {
@@ -49,12 +47,12 @@ class MusicBrainzApiImpl() : MusicBrainzApi {
             level = LogLevel.INFO
         }
         defaultRequest {
-            header("User-Agent", USER_AGENT)
+            header("User-Agent", userAgent)
         }
     }
 
     override suspend fun searchArtist(query: String) =
-        http.get<String>("$BASE_URL/artist") {
+        http.get<String>("$baseUrl/artist") {
             parameter("query", query)
         }.run {
             mapper.readValue<SearchArtistsResponse>(this).artists.artists.map { artist ->

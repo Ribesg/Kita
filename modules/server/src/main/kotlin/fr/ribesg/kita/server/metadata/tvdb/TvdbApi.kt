@@ -2,7 +2,7 @@
 
 package fr.ribesg.kita.server.metadata.tvdb
 
-import fr.ribesg.kita.server.util.JwtTokenHelper
+import com.auth0.jwt.JWT
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.defaultRequest
@@ -22,6 +22,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import org.slf4j.LoggerFactory
 import java.time.Duration
+import java.time.Instant
 
 interface TvdbApi {
 
@@ -90,8 +91,12 @@ class TvdbApiImpl : TvdbApi {
         val token = jwtToken
         if (token == null) {
             login()
-        } else if (JwtTokenHelper.getRemainingTimeBeforeExpiration(token) < TOKEN_REFRESH_THRESHOLD) {
-            refreshToken()
+        } else {
+            val expiresAt = JWT.decode(token).expiresAt
+            val duration = Duration.between(Instant.now(), expiresAt.toInstant())
+            if (duration.toMillis() < TOKEN_REFRESH_THRESHOLD) {
+                refreshToken()
+            }
         }
         return task()
     }

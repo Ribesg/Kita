@@ -4,8 +4,8 @@ import io.ktor.routing.Routing
 
 fun Routing.routes() {
 
+    auth()
     search()
-    tmp()
 
     // Static content
     assets()

@@ -13,6 +13,7 @@ object Versions {
     val serialization = "0.13.0"
 
     // JVM
+    val bouncyCastle = "1.63"
     val jackson = "2.10.0"
     val koin = "2.0.1"
     val ktor = "1.2.5"

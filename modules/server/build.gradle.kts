@@ -20,11 +20,13 @@ dependencies {
     implementation("org.koin:koin-ktor:${Versions.koin}")
     implementation("org.koin:koin-logger-slf4j:${Versions.koin}")
 
+    implementation("io.ktor:ktor-auth-jwt:${Versions.ktor}")
     implementation("io.ktor:ktor-client-cio:${Versions.ktor}")
     implementation("io.ktor:ktor-client-json:${Versions.ktor}")
     implementation("io.ktor:ktor-client-logging-jvm:${Versions.ktor}")
     implementation("io.ktor:ktor-client-serialization-jvm:${Versions.ktor}")
     implementation("io.ktor:ktor-html-builder:${Versions.ktor}")
+    implementation("io.ktor:ktor-locations:${Versions.ktor}")
     implementation("io.ktor:ktor-serialization:${Versions.ktor}")
     implementation("io.ktor:ktor-server-cio:${Versions.ktor}")
 
@@ -32,6 +34,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${Versions.jackson}")
+
+    implementation("org.bouncycastle:bcprov-jdk15on:${Versions.bouncyCastle}")
 
 }
 
@@ -73,6 +77,13 @@ tasks.getByName<Jar>("jar") {
         "Main-Class" to "${project.group}.${project.name}.MainKt"
     )
     from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+        configurations
+            .runtimeClasspath.get()
+            .filter { it.name.endsWith("jar") }
+            .map {
+                zipTree(it).matching { 
+                    exclude("**/*.SF", "**/*.DSA", "**/*.RSA")
+                }
+            }
     })
 }
