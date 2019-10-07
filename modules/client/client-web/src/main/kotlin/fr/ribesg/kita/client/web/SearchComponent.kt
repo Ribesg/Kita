@@ -1,5 +1,6 @@
 package fr.ribesg.kita.client.web
 
+import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.SearchResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
@@ -33,6 +34,7 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
         styledDiv {
             css {
                 width = 100.pct
+                maxHeight = 100.pct
                 display = Display.flex
                 flexDirection = FlexDirection.column
             }
@@ -69,7 +71,7 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
 
     private fun performSearch() {
         GlobalScope.launch {
-            val searchResponse = http.get<SearchResponse>("/search") {
+            val searchResponse = http.get<SearchResponse>(Paths.search) {
                 parameter("query", state.query)
             }
             setState({ prev ->

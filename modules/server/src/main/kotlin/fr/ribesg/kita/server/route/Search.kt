@@ -2,6 +2,7 @@
 
 package fr.ribesg.kita.server.route
 
+import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.SearchResponse
 import fr.ribesg.kita.server.metadata.tmdb.TmdbApi
 import fr.ribesg.kita.server.metadata.tmdb.toMovie
@@ -12,8 +13,8 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import org.koin.ktor.ext.inject
 
-@Location("/api/search")
-private data class SearchLocation(val query: String)
+@Location(Paths.search)
+data class SearchLocation(val query: String)
 
 fun Routing.search() {
 

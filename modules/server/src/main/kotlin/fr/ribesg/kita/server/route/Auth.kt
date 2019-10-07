@@ -2,6 +2,7 @@
 
 package fr.ribesg.kita.server.route
 
+import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.server.feature.user.UserService
 import io.ktor.application.call
 import io.ktor.locations.Location
@@ -10,14 +11,14 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import org.koin.ktor.ext.inject
 
-@Location("/api/auth/login")
-private data class LoginLocation(val login: String, val password: String)
+@Location(Paths.Auth.login)
+data class LoginLocation(val login: String, val password: String)
 
-@Location("/api/auth/refresh")
-private data class RefreshLocation(val refreshToken: String)
+@Location(Paths.Auth.refresh)
+data class RefreshLocation(val refreshToken: String)
 
-@Location("/api/auth/register")
-private data class RegisterLocation(val login: String, val password: String)
+@Location(Paths.Auth.register)
+data class RegisterLocation(val login: String, val password: String)
 
 fun Routing.auth() {
 
