@@ -25,6 +25,7 @@ import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
 import org.slf4j.LoggerFactory
+import org.slf4j.event.Level
 
 fun Application.kita() {
 
@@ -61,6 +62,7 @@ fun Application.kita() {
 
     install(CallLogging) {
         logger = LoggerFactory.getLogger("Ktor-Server")
+        level = Level.INFO
     }
 
     routing(Routing::routes)

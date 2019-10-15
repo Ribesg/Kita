@@ -85,10 +85,6 @@ kotlin {
         implementation("org.jetbrains:kotlin-css-js:${Versions.kotlinCssJs}")
         implementation("org.jetbrains:kotlin-styled:${Versions.kotlinStyled}")
 
-        implementation("io.ktor:ktor-client-js:${Versions.ktor}")
-        implementation("io.ktor:ktor-client-json-js:${Versions.ktor}")
-        implementation("io.ktor:ktor-client-serialization-js:${Versions.ktor}")
-
     }
 
 }

@@ -6,26 +6,22 @@ import com.auth0.jwt.exceptions.AlgorithmMismatchException
 import com.auth0.jwt.exceptions.InvalidClaimException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
+import fr.ribesg.kita.common.model.AuthTokens
 import fr.ribesg.kita.server.Database
-import fr.ribesg.kita.server.feature.user.UserService.Tokens
 import fr.ribesg.kita.server.util.Crypto
 import fr.ribesg.kita.server.util.HttpException
 import fr.ribesg.kita.server.util.Jwt
 import io.ktor.features.BadRequestException
 import io.ktor.http.HttpStatusCode
-import kotlinx.serialization.Serializable
 import java.util.*
 
 interface UserService {
 
-    fun login(login: String, password: String): Tokens
+    fun login(login: String, password: String): AuthTokens
 
-    fun refresh(refreshToken: String): Tokens
+    fun refresh(refreshToken: String): AuthTokens
 
-    fun register(login: String, password: String): Tokens
-
-    @Serializable
-    data class Tokens(val accessToken: String, val refreshToken: String)
+    fun register(login: String, password: String): AuthTokens
 
 }
 
@@ -36,7 +32,13 @@ class UserServiceImpl(
 
     private val userQueries = database.userQueries
 
-    override fun login(login: String, password: String): Tokens {
+    init {
+        if (userQueries.getUserByLogin("admin").executeAsOneOrNull() == null) {
+            register("admin", "admin")
+        }
+    }
+
+    override fun login(login: String, password: String): AuthTokens {
         val user = userQueries.getUserByLogin(login).executeAsOneOrNull()
             ?: throw BadRequestException("Bad credentials")
         if (!Crypto.check(password, user.passwordSalt, user.passwordHash))
@@ -44,7 +46,7 @@ class UserServiceImpl(
         return newTokens(user.id)
     }
 
-    override fun refresh(refreshToken: String): Tokens {
+    override fun refresh(refreshToken: String): AuthTokens {
         val token = try {
             jwt.verifier.verify(refreshToken)
         } catch (e: Throwable) {
@@ -61,7 +63,7 @@ class UserServiceImpl(
         return newTokens(token.claims["id"]!!.asString())
     }
 
-    override fun register(login: String, password: String): Tokens {
+    override fun register(login: String, password: String): AuthTokens {
         if (userQueries.getUserByLogin(login).executeAsOneOrNull() != null)
             throw HttpException(HttpStatusCode.Conflict)
         val id = UUID.randomUUID().toString()
@@ -76,7 +78,7 @@ class UserServiceImpl(
         return newTokens(id)
     }
 
-    private fun newTokens(id: String): Tokens =
-        Tokens(jwt.newAccessToken(id), jwt.newRefreshToken(id))
+    private fun newTokens(id: String): AuthTokens =
+        AuthTokens(jwt.newAccessToken(id), jwt.newRefreshToken(id))
 
 }
