@@ -23,12 +23,7 @@ object Crypto {
         scrypt(password.toByteArray(), salt).contentEquals(hash)
 
     private fun scrypt(passphrase: ByteArray, salt: ByteArray) =
-        SCrypt.generate(passphrase, salt,
-            N,
-            r,
-            p,
-            dkLen
-        )!!
+        SCrypt.generate(passphrase, salt, N, r, p, dkLen)!!
 
     data class SaltAndHash(val salt: ByteArray, val hash: ByteArray) {
         override fun equals(other: Any?) = throw UnsupportedOperationException()

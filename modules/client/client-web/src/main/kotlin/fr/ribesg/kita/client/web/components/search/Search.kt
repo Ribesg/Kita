@@ -13,10 +13,7 @@ import io.ktor.client.request.parameter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.css.*
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import react.dom.h1
 import styled.css
 import styled.styledDiv
@@ -52,42 +49,28 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
         }
     }
 
-    private fun onInputChanged(text: String) {
-        setState({ prev ->
-            State(
-                query = text,
-                results = prev.results,
-                isSearching = prev.isSearching
-            )
-        })
-    }
+    private fun onInputChanged(text: String) =
+        setState { query = text }
 
-    private fun onSearchTriggered() {
-        setState({ prev ->
-            State(
-                query = prev.query,
-                results = null,
-                isSearching = true
-            )
-        }, ::performSearch)
-    }
+    private fun onSearchTriggered() =
+        setState {
+            results = null
+            isSearching = true
+        }
 
     private fun performSearch() {
         GlobalScope.launch {
             val searchResponse = http.get<SearchResponse>(Paths.search) {
                 parameter("query", state.query)
             }
-            setState({ prev ->
-                State(
-                    query = prev.query,
-                    results = searchResponse,
-                    isSearching = false
-                )
-            })
+            setState {
+                results = searchResponse
+                isSearching = false
+            }
         }
     }
 
-    data class State(
+    class State(
         var query: String,
         var results: SearchResponse?,
         var isSearching: Boolean

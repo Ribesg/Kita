@@ -9,7 +9,7 @@ kotlin {
     }
 
     sourceSets["main"].dependencies {
-        
+
         implementation(npm("core-js"))
         implementation(npm("redux", Versions.redux))
         implementation(npm("react", Versions.react))

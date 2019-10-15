@@ -81,7 +81,7 @@ tasks.getByName<Jar>("jar") {
             .runtimeClasspath.get()
             .filter { it.name.endsWith("jar") }
             .map {
-                zipTree(it).matching { 
+                zipTree(it).matching {
                     exclude("**/*.SF", "**/*.DSA", "**/*.RSA")
                 }
             }
