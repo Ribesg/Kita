@@ -34,7 +34,10 @@ kotlin {
                         }
                     }
                     doLast {
-                        prodConfigFile.delete()
+                        prodConfigFile.run {
+                            delete()
+                            parentFile.delete() // Delete parent directory if it's empty
+                        }
                     }
                 }
 

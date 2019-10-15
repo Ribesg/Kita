@@ -1,5 +1,7 @@
-package fr.ribesg.kita.client.web
+package fr.ribesg.kita.client.web.components.search
 
+import fr.ribesg.kita.client.web.components.search.form.searchForm
+import fr.ribesg.kita.client.web.components.search.results.searchResults
 import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.SearchResponse
 import io.ktor.client.HttpClient
@@ -15,6 +17,7 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
+import react.dom.h1
 import styled.css
 import styled.styledDiv
 
@@ -38,8 +41,8 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
                 display = Display.flex
                 flexDirection = FlexDirection.column
             }
-            reactiveTitle("Search movies on TMDB")
-            searchInput(
+            h1 { +"Search movies on TMDB" }
+            searchForm(
                 isInputEnabled = !state.isSearching,
                 isButtonEnabled = state.query.isNotEmpty() && !state.isSearching,
                 onInputChanged = ::onInputChanged,
@@ -92,4 +95,6 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
 
 }
 
-fun RBuilder.search() = child(SearchComponent::class) {}
+fun RBuilder.search() {
+    child(SearchComponent::class) {}
+}
