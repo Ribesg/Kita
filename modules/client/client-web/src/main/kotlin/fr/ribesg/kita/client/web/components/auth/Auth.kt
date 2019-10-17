@@ -56,6 +56,8 @@ private enum class AuthAction(
 }
 
 private val AuthComponent = functionalComponent<AuthProps> { props ->
+    
+    val scope = createComponentScope()
 
     val (action, setAction) = useState(AuthAction.LOGIN)
     val (loginInput, setLoginInput) = useState("")
@@ -68,7 +70,7 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
     }
 
     val onActionButtonClicked: () -> Unit = {
-        createComponentScope().launch(CoroutineExceptionHandler { _, error ->
+        scope.launch(CoroutineExceptionHandler { _, error ->
             setLoading(false)
             console.error("Failed to ${action.displayName}", error)
             window.alert("Failed to ${action.displayName}: $error")
