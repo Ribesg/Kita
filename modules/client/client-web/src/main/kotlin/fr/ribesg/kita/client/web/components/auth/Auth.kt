@@ -1,99 +1,129 @@
+@file:Suppress("FunctionName")
+
 package fr.ribesg.kita.client.web.components.auth
 
 import fr.ribesg.kita.client.common.Apis
-import fr.ribesg.kita.client.web.components.auth.AuthContainer.State
-import fr.ribesg.kita.client.web.components.ui.button
-import fr.ribesg.kita.client.web.components.ui.input
+import fr.ribesg.kita.client.web.components.ui.Button
+import fr.ribesg.kita.client.web.components.ui.Input
+import fr.ribesg.kita.client.web.components.ui.Link
+import fr.ribesg.kita.client.web.components.util.componentScope
+import fr.ribesg.kita.common.model.AuthTokens
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.css.Display
-import kotlinx.css.FlexDirection
+import kotlinx.css.Display.flex
+import kotlinx.css.FlexDirection.column
 import kotlinx.css.display
 import kotlinx.css.flexDirection
 import kotlinx.html.InputType
 import react.*
+import react.dom.h3
 import styled.css
 import styled.styledDiv
 import kotlin.browser.window
 
-fun RBuilder.auth() {
-    child(AuthContainer::class) {}
+interface AuthProps : RProps {
+    var title: String
 }
 
-private class AuthContainer : RComponent<RProps, State>() {
-
-    private val isLoginButtonEnabled: Boolean
-        get() = state.run { loginInput.isNotEmpty() && passwordInput.isNotEmpty() }
-
-    init {
-        state = State(
-            loginInput = "",
-            passwordInput = "",
-            isSignUpMode = false
-        )
+fun RBuilder.Auth(title: String) =
+    child(AuthComponent) {
+        attrs.title = title
     }
 
-    override fun RBuilder.render() = authView(
-        loginInput = state.loginInput,
-        onLoginChanged = ::onLoginChanged,
-        passwordInput = state.passwordInput,
-        onPasswordChanged = ::onPasswordChanged,
-        loginButtonText = if (state.isSignUpMode) "Signup" else "Login",
-        isLoginButtonEnabled = isLoginButtonEnabled,
-        onLoginButtonClicked = ::onLoginButtonClicked
-    )
+private enum class AuthAction(
+    val displayName: String,
+    val switchText: String,
+    val execute: suspend (login: String, password: String) -> AuthTokens
+) {
 
-    private fun onLoginChanged(text: String) =
-        setState { loginInput = text }
+    LOGIN(
+        "Login",
+        "No account? Register!",
+        Apis.auth::login
+    ),
 
-    private fun onPasswordChanged(text: String) =
-        setState { passwordInput = text }
+    REGISTER(
+        "Register",
+        "Already have an account?",
+        Apis.auth::register
+    ),
 
-    private fun onLoginButtonClicked() {
-        GlobalScope.launch(CoroutineExceptionHandler { _, error ->
-            console.error("Failed to call login", error)
+    ;
+
+    val other: AuthAction
+        get() = values().single { it != this }
+
+}
+
+private val AuthComponent = functionalComponent<AuthProps> { props ->
+
+    val (action, setAction) = useState(AuthAction.LOGIN)
+    val (loginInput, setLoginInput) = useState("")
+    val (passwordInput, setPasswordInput) = useState("")
+    val (confirmPasswordInput, setConfirmPasswordInput) = useState("")
+    val (isLoading, setLoading) = useState(false)
+
+    val isActionButtonEnabled = {
+        loginInput.isNotBlank() && passwordInput.isNotEmpty()
+    }
+
+    val onActionButtonClicked: () -> Unit = {
+        componentScope.launch(CoroutineExceptionHandler { _, error ->
+            setLoading(false)
+            console.error("Failed to ${action.displayName}", error)
+            window.alert("Failed to ${action.displayName}: $error")
         }) {
-            val tokens = Apis.auth.login(state.loginInput, state.passwordInput)
-            window.alert("Tokens: $tokens")
+            setLoading(true)
+            val tokens = action.execute(loginInput, passwordInput)
+            console.info("accessToken=${tokens.accessToken}")
+            console.info("refreshToken=${tokens.refreshToken}")
+            setLoading(false)
         }
     }
 
-    class State(
-        var loginInput: String,
-        var passwordInput: String,
-        var isSignUpMode: Boolean
-    ) : RState
+    val onSwitchLinkClicked: () -> Unit = {
+        setAction(action.other)
+    }
 
-}
-
-private fun RBuilder.authView(
-    loginInput: String,
-    onLoginChanged: (String) -> Unit,
-    passwordInput: String,
-    onPasswordChanged: (String) -> Unit,
-    loginButtonText: String,
-    isLoginButtonEnabled: Boolean,
-    onLoginButtonClicked: () -> Unit
-) {
     styledDiv {
         css {
-            display = Display.flex
-            flexDirection = FlexDirection.column
+            display = flex
+            flexDirection = column
         }
-        input(
-            onInputTextChanged = onLoginChanged,
+        h3 {
+            +props.title
+        }
+        Input(
+            enabled = !isLoading,
+            onInputTextChanged = setLoginInput,
+            placeholder = "Login",
             value = loginInput
         )
-        input(
-            onInputTextChanged = onPasswordChanged,
+        Input(
+            enabled = !isLoading,
+            onInputTextChanged = setPasswordInput,
+            placeholder = "Password",
             value = passwordInput,
             type = InputType.password
         )
-        button(
-            enabled = isLoginButtonEnabled,
-            onButtonClicked = onLoginButtonClicked,
-            text = loginButtonText
+        if (action == AuthAction.REGISTER) {
+            Input(
+                enabled = !isLoading,
+                onInputTextChanged = setConfirmPasswordInput,
+                placeholder = "Password confirmation",
+                value = confirmPasswordInput,
+                type = InputType.password
+            )
+        }
+        Button(
+            enabled = isActionButtonEnabled() && !isLoading,
+            onClick = onActionButtonClicked,
+            text = action.displayName
+        )
+        Link(
+            text = action.switchText,
+            onClick = onSwitchLinkClicked
         )
     }
+
 }

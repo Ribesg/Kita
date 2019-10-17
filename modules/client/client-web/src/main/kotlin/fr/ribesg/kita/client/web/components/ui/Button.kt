@@ -1,18 +1,20 @@
+@file:Suppress("FunctionName")
+
 package fr.ribesg.kita.client.web.components.ui
 
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import styled.styledButton
 
-fun RBuilder.button(
+fun RBuilder.Button(
     text: String,
     enabled: Boolean = true,
-    onButtonClicked: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null
 ) {
     styledButton {
         +text
         attrs.disabled = !enabled
-        onButtonClicked?.let { callback ->
+        onClick?.let { callback ->
             attrs.onClickFunction = { callback() }
         }
     }

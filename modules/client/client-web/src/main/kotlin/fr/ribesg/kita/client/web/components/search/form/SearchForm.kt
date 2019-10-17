@@ -1,9 +1,9 @@
 package fr.ribesg.kita.client.web.components.search.form
 
-import fr.ribesg.kita.client.web.components.ui.button
-import fr.ribesg.kita.client.web.components.ui.input
-import kotlinx.css.Display
-import kotlinx.css.FlexDirection
+import fr.ribesg.kita.client.web.components.ui.Button
+import fr.ribesg.kita.client.web.components.ui.Input
+import kotlinx.css.Display.flex
+import kotlinx.css.FlexDirection.row
 import kotlinx.css.display
 import kotlinx.css.flexDirection
 import react.RBuilder
@@ -18,18 +18,18 @@ fun RBuilder.searchForm(
 ) {
     styledDiv {
         css {
-            display = Display.flex
-            flexDirection = FlexDirection.row
+            display = flex
+            flexDirection = row
         }
-        input(
+        Input(
             enabled = isInputEnabled,
             onEnterKeyPressed = onSearchTriggered,
             onInputTextChanged = onInputChanged
         )
-        button(
+        Button(
             text = "Search",
             enabled = isButtonEnabled,
-            onButtonClicked = onSearchTriggered
+            onClick = onSearchTriggered
         )
     }
 }

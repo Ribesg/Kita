@@ -1,8 +1,10 @@
+@file:Suppress("FunctionName")
+
 package fr.ribesg.kita.client.web.components.root
 
-import fr.ribesg.kita.client.web.components.auth.auth
+import fr.ribesg.kita.client.web.components.auth.Auth
 import react.RBuilder
 
-fun RBuilder.root() {
-    auth()
+fun RBuilder.Root() {
+    Auth("Authentification")
 }

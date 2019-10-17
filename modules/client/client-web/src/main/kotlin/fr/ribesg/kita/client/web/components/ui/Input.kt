@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package fr.ribesg.kita.client.web.components.ui
 
 import kotlinx.html.INPUT
@@ -8,7 +10,7 @@ import org.w3c.dom.events.KeyboardEvent
 import react.RBuilder
 import styled.styledInput
 
-fun RBuilder.input(
+fun RBuilder.Input(
     enabled: Boolean = true,
     onEnterKeyPressed: (() -> Unit)? = null,
     onInputTextChanged: ((String) -> Unit)? = null,

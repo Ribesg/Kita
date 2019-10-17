@@ -13,6 +13,8 @@ import io.ktor.client.request.parameter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.css.*
+import kotlinx.css.Display.*
+import kotlinx.css.FlexDirection.*
 import react.*
 import react.dom.h1
 import styled.css
@@ -35,8 +37,8 @@ class SearchComponent : RComponent<RProps, SearchComponent.State>() {
             css {
                 width = 100.pct
                 maxHeight = 100.pct
-                display = Display.flex
-                flexDirection = FlexDirection.column
+                display = flex
+                flexDirection = column
             }
             h1 { +"Search movies on TMDB" }
             searchForm(

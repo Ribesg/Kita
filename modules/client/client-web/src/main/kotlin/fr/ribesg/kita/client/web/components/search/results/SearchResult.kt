@@ -2,6 +2,8 @@ package fr.ribesg.kita.client.web.components.search.results
 
 import fr.ribesg.kita.common.model.SearchResponseMovie
 import kotlinx.css.*
+import kotlinx.css.Display.*
+import kotlinx.css.FlexDirection.*
 import react.RBuilder
 import react.dom.h3
 import react.dom.p
@@ -12,8 +14,8 @@ import styled.styledImg
 fun RBuilder.searchResult(result: SearchResponseMovie) {
     styledDiv {
         css {
-            display = Display.flex
-            flexDirection = FlexDirection.row
+            display = flex
+            flexDirection = row
             margin = 5.px.value
         }
         styledImg(src = result.posterUrl) {
@@ -26,8 +28,8 @@ fun RBuilder.searchResult(result: SearchResponseMovie) {
         }
         styledDiv {
             css {
-                display = Display.flex
-                flexDirection = FlexDirection.column
+                display = flex
+                flexDirection = column
             }
             h3 { +result.title }
             p { +result.description }

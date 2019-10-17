@@ -15,6 +15,11 @@ android {
         targetSdkVersion(Versions.androidSdk)
     }
 
+    compileOptions {
+        sourceCompatibility = Versions.java
+        targetCompatibility = Versions.java
+    }
+
     lintOptions {
         isAbortOnError = false
     }
