@@ -6,7 +6,7 @@ import fr.ribesg.kita.client.common.Apis
 import fr.ribesg.kita.client.web.components.ui.Button
 import fr.ribesg.kita.client.web.components.ui.Input
 import fr.ribesg.kita.client.web.components.ui.Link
-import fr.ribesg.kita.client.web.components.util.componentScope
+import fr.ribesg.kita.client.web.components.util.createComponentScope
 import fr.ribesg.kita.common.model.AuthTokens
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -68,7 +68,7 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
     }
 
     val onActionButtonClicked: () -> Unit = {
-        componentScope.launch(CoroutineExceptionHandler { _, error ->
+        createComponentScope().launch(CoroutineExceptionHandler { _, error ->
             setLoading(false)
             console.error("Failed to ${action.displayName}", error)
             window.alert("Failed to ${action.displayName}: $error")

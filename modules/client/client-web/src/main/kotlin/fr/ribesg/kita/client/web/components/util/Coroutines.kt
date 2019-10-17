@@ -1,9 +1,12 @@
 package fr.ribesg.kita.client.web.components.util
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import react.useEffectWithCleanup
 
-val componentScope: CoroutineScope
-    get() = (MainScope() + Job()).apply {
+fun createComponentScope() =
+    (MainScope() + Job()).apply {
         useEffectWithCleanup(emptyList()) { { cancel() } }
     }
