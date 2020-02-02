@@ -1,70 +1,17 @@
 @file:Suppress("ConstantConditionIf")
 
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
-
 repositories {
     maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
 }
 
 plugins {
     kotlin("js")
-    id("kotlin-dce-js")
 }
 
 kotlin {
 
     target {
-        browser {
-            webpackTask {
-
-                // Basic Webpack task configuration
-                archiveFileName = Build.webClientJsFileName
-                report = true
-                saveEvaluatedConfigFile = true
-                sourceMaps = Build.isSnapshot
-
-                // Bind Webpack production mode to Build.isSnapshot using the webpack.config.d directory
-                if (!Build.isSnapshot) {
-                    val prodConfigFile = file("webpack.config.d/production.js")
-                    doFirst {
-                        prodConfigFile.run {
-                            parentFile.mkdirs()
-                            writeText("config.mode = 'production';")
-                        }
-                    }
-                    doLast {
-                        prodConfigFile.run {
-                            delete()
-                            parentFile.delete() // Delete parent directory if it's empty
-                        }
-                    }
-                }
-
-                // DCE specific configuration
-                val compileKotlinJs by tasks.getting(Kotlin2JsCompile::class)
-                val runDceKotlin by tasks.getting(KotlinJsDce::class)
-                dependsOn(runDceKotlin)
-                runDceKotlin.run {
-                    dceOptions {
-                        devMode = Build.isSnapshot
-                    }
-                }
-                doFirst {
-                    copy {
-                        from(runDceKotlin.destinationDir)
-                        into("${compileKotlinJs.destinationDir}")
-                        include("${project.name}*")
-                    }
-                    copy {
-                        from(runDceKotlin.destinationDir)
-                        into("${compileKotlinJs.destinationDir}/node_modules")
-                        exclude("${project.name}*")
-                    }
-                }
-
-            }
-        }
+        browser()
     }
 
     sourceSets["main"].dependencies {

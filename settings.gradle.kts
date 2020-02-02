@@ -1,4 +1,4 @@
-rootProject.name = Build.name
+rootProject.name = "kita"
 
 include(
     *findProjects(rootProject.projectDir.resolve("modules"))
