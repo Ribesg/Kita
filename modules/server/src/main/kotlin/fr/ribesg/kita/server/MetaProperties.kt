@@ -29,7 +29,7 @@ class MetaPropertiesImpl : MetaProperties {
 
     private val properties = Properties().apply {
         load(
-            javaClass.getResourceAsStream("/metadata.properties")
+            MetaProperties::class.java.classLoader.getResourceAsStream("metadata.properties")
                 ?: throw IllegalStateException("metadata.properties not found")
         )
     }

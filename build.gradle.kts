@@ -30,13 +30,6 @@ idea {
     }
 }
 
-// TODO Meh, maybe we should not start things inside Gradle
-tasks.create<JavaExec>("run") {
-    dependsOn(":modules:client:client-web:build")
-    dependsOn(":modules:server:build")
-    classpath(project(":modules:server").buildDir.resolve("libs").resolve("${Build.name}.jar"))
-}
-
 tasks.withType<Wrapper> {
     gradleVersion = Versions.gradle
     distributionType = Wrapper.DistributionType.ALL

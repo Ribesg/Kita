@@ -32,13 +32,9 @@ android {
 
 dependencies {
 
-    implementation(project(":modules:common"))
-    implementation(project(":modules:client:client-common"))
+    api(project(":modules:common"))
+    api(project(":modules:client:client-common"))
 
-    implementation(kotlin("stdlib-jdk7"))
+    api(kotlin("stdlib-jdk7"))
 
 }
-
-// Temporary workaround for https://youtrack.jetbrains.com/issue/KT-27170
-configurations.create("compileClasspath")
-tasks.named("lint") { enabled = false }

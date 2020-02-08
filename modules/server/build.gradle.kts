@@ -8,34 +8,34 @@ plugins {
 
 dependencies {
 
-    implementation(project(":modules:common"))
+    api(project(":modules:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.serialization}")
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.serialization}")
 
-    implementation("ch.qos.logback:logback-classic:${Versions.logback}")
+    api("ch.qos.logback:logback-classic:${Versions.logback}")
 
-    implementation("org.koin:koin-core:${Versions.koin}")
-    implementation("org.koin:koin-ktor:${Versions.koin}")
-    implementation("org.koin:koin-logger-slf4j:${Versions.koin}")
+    api("org.koin:koin-core:${Versions.koin}")
+    api("org.koin:koin-ktor:${Versions.koin}")
+    api("org.koin:koin-logger-slf4j:${Versions.koin}")
 
-    implementation("io.ktor:ktor-auth-jwt:${Versions.ktor}")
-    implementation("io.ktor:ktor-client-cio:${Versions.ktor}")
-    implementation("io.ktor:ktor-client-json:${Versions.ktor}")
-    implementation("io.ktor:ktor-client-logging-jvm:${Versions.ktor}")
-    implementation("io.ktor:ktor-client-serialization-jvm:${Versions.ktor}")
-    implementation("io.ktor:ktor-html-builder:${Versions.ktor}")
-    implementation("io.ktor:ktor-locations:${Versions.ktor}")
-    implementation("io.ktor:ktor-serialization:${Versions.ktor}")
-    implementation("io.ktor:ktor-server-cio:${Versions.ktor}")
+    api("io.ktor:ktor-auth-jwt:${Versions.ktor}")
+    api("io.ktor:ktor-client-cio:${Versions.ktor}")
+    api("io.ktor:ktor-client-json:${Versions.ktor}")
+    api("io.ktor:ktor-client-logging-jvm:${Versions.ktor}")
+    api("io.ktor:ktor-client-serialization-jvm:${Versions.ktor}")
+    api("io.ktor:ktor-html-builder:${Versions.ktor}")
+    api("io.ktor:ktor-locations:${Versions.ktor}")
+    api("io.ktor:ktor-serialization:${Versions.ktor}")
+    api("io.ktor:ktor-server-cio:${Versions.ktor}")
 
-    implementation("com.squareup.sqldelight:sqlite-driver:${Versions.sqldelight}")
+    api("com.squareup.sqldelight:sqlite-driver:${Versions.sqldelight}")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${Versions.jackson}")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+    api("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${Versions.jackson}")
 
-    implementation("org.bouncycastle:bcprov-jdk15on:${Versions.bouncyCastle}")
+    api("org.bouncycastle:bcprov-jdk15on:${Versions.bouncyCastle}")
 
 }
 

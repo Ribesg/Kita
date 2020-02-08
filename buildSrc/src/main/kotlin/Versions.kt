@@ -18,7 +18,7 @@ object Versions {
     val bouncyCastle = "1.64"
     val jackson = "2.10.2"
     val koin = "2.0.1"
-    val ktor = "1.3.0"
+    val ktor = "1.3.1"
     val logback = "1.2.3"
     val sqldelight = "1.2.2"
 
@@ -29,7 +29,7 @@ object Versions {
     val reactRouter = "4.3.1"
     val inlineStylePrefixer = "5.1.0"
     val styledComponents = "4.4.0"
-    val jetbrainsWrapper = "pre.90"
+    val jetbrainsWrapper = "pre.91"
     val kotlinCss = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinCssJs = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinExtensions = "1.0.1-$jetbrainsWrapper-kotlin-$kotlin"

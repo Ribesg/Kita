@@ -11,26 +11,30 @@ plugins {
 kotlin {
 
     target {
-        browser()
+        browser {
+            webpackTask {
+                outputFileName = Build.webClientJsFileName
+            }
+        }
     }
 
     sourceSets["main"].dependencies {
 
-        implementation(project(":modules:common"))
-        implementation(project(":modules:client:client-common"))
-        implementation(project(":modules:client:client-web-npm-dependencies"))
+        api(project(":modules:common"))
+        api(project(":modules:client:client-common"))
+        api(project(":modules:client:client-web-npm-dependencies"))
 
-        implementation(kotlin("stdlib-js"))
+        api(kotlin("stdlib-js"))
 
-        implementation("org.jetbrains:kotlin-extensions:${Versions.kotlinExtensions}")
-        implementation("org.jetbrains:kotlin-redux:${Versions.reduxWrapper}")
-        implementation("org.jetbrains:kotlin-react:${Versions.reactWrapper}")
-        implementation("org.jetbrains:kotlin-react-redux:${Versions.reactReduxWrapper}")
-        implementation("org.jetbrains:kotlin-react-dom:${Versions.reactWrapper}")
-        implementation("org.jetbrains:kotlin-react-router-dom:${Versions.reactRouterWrapper}")
-        implementation("org.jetbrains:kotlin-css:${Versions.kotlinCss}")
-        implementation("org.jetbrains:kotlin-css-js:${Versions.kotlinCssJs}")
-        implementation("org.jetbrains:kotlin-styled:${Versions.kotlinStyled}")
+        api("org.jetbrains:kotlin-extensions:${Versions.kotlinExtensions}")
+        api("org.jetbrains:kotlin-redux:${Versions.reduxWrapper}")
+        api("org.jetbrains:kotlin-react:${Versions.reactWrapper}")
+        api("org.jetbrains:kotlin-react-redux:${Versions.reactReduxWrapper}")
+        api("org.jetbrains:kotlin-react-dom:${Versions.reactWrapper}")
+        api("org.jetbrains:kotlin-react-router-dom:${Versions.reactRouterWrapper}")
+        api("org.jetbrains:kotlin-css:${Versions.kotlinCss}")
+        api("org.jetbrains:kotlin-css-js:${Versions.kotlinCssJs}")
+        api("org.jetbrains:kotlin-styled:${Versions.kotlinStyled}")
 
     }
 
