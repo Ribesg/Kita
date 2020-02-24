@@ -9,12 +9,26 @@ import fr.ribesg.kita.client.web.components.ui.Link
 import fr.ribesg.kita.client.web.components.util.createComponentScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.css.*
-import kotlinx.css.Display.flex
-import kotlinx.css.FlexDirection.column
+import kotlinx.css.Align
+import kotlinx.css.Display
+import kotlinx.css.FlexDirection
+import kotlinx.css.JustifyContent
+import kotlinx.css.alignItems
+import kotlinx.css.display
+import kotlinx.css.em
+import kotlinx.css.flexDirection
+import kotlinx.css.height
+import kotlinx.css.justifyContent
+import kotlinx.css.margin
+import kotlinx.css.padding
+import kotlinx.css.pct
 import kotlinx.html.InputType
-import react.*
+import react.RBuilder
+import react.RProps
+import react.child
 import react.dom.h3
+import react.functionalComponent
+import react.useState
 import styled.css
 import styled.styledDiv
 import kotlin.browser.window
@@ -91,8 +105,11 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
 
     styledDiv {
         css {
-            display = flex
-            flexDirection = column
+            display = Display.flex
+            flexDirection = FlexDirection.column
+            alignItems = Align.center
+            justifyContent = JustifyContent.center
+            height = 100.pct
             padding(.5.em)
             children {
                 margin(.5.em)

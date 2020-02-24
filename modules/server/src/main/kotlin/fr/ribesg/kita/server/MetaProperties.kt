@@ -7,7 +7,6 @@ interface MetaProperties {
     val name: String
     val uniqueBuildNumber: String
     val version: String
-    val webClientJsFileName: String
 }
 
 class MetaPropertiesImpl : MetaProperties {
@@ -23,9 +22,6 @@ class MetaPropertiesImpl : MetaProperties {
 
     override val version: String
         get() = properties.getProperty("version")
-
-    override val webClientJsFileName: String
-        get() = properties.getProperty("webClientJsFileName")
 
     private val properties = Properties().apply {
         load(

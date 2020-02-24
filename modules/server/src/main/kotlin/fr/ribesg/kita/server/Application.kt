@@ -11,7 +11,12 @@ import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
-import io.ktor.features.*
+import io.ktor.features.AutoHeadResponse
+import io.ktor.features.CallLogging
+import io.ktor.features.Compression
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
 import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.Routing

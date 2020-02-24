@@ -52,9 +52,7 @@ tasks.create("createProperties") {
             """
             contact=${Build.contact}
             name=${Build.name}
-            uniqueBuildNumber=${Build.id}
             version=${Build.version}
-            webClientJsFileName=${Build.webClientJsFileName}
             """.trimIndent()
         )
     }
@@ -69,11 +67,12 @@ tasks.create<Copy>("copyWebClient") {
         .resolve("resources")
         .resolve("main")
         .resolve("assets")
+        .resolve("js")
 
     doFirst {
         destinationDir
             .listFiles { _, name ->
-                name.startsWith(Build.name) && name.endsWith(".js")
+                name.endsWith(".js")
             }
             ?.forEach { file ->
                 file.delete()
@@ -81,7 +80,7 @@ tasks.create<Copy>("copyWebClient") {
     }
 
     from(webClientProject.buildDir.resolve("distributions")) {
-        include(Build.webClientJsFileName)
+        include("*.js")
     }
 
     into(destinationDir)

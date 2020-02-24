@@ -1,7 +1,5 @@
 @file:Suppress("ConstantConditionIf", "EXPERIMENTAL_API_USAGE", "MemberVisibilityCanBePrivate")
 
-import java.util.*
-
 object Build {
 
     private const val major = 0
@@ -15,7 +13,5 @@ object Build {
     const val contact = "ribesg@gmail.com"
     const val name = "kita"
     const val group = "fr.ribesg.$name"
-    val id = UUID.randomUUID().toString().replace("-", "")
-    val webClientJsFileName = "$name-$id.js"
 
 }

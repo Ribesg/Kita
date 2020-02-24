@@ -1,5 +1,7 @@
 @file:Suppress("ConstantConditionIf")
 
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+
 repositories {
     maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
 }
@@ -13,7 +15,7 @@ kotlin {
     target {
         browser {
             webpackTask {
-                outputFileName = Build.webClientJsFileName
+                outputFileName = Build.name + ".[contentHash].js"
             }
         }
     }
@@ -38,4 +40,10 @@ kotlin {
 
     }
 
+}
+
+tasks.withType<KotlinWebpack> {
+    doFirst {
+        destinationDirectory?.listFiles()?.forEach { it.delete() }
+    }
 }

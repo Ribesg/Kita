@@ -10,10 +10,17 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import react.*
-import react.dom.p
+import kotlinx.css.em
+import kotlinx.css.width
+import react.RBuilder
+import react.RProps
+import react.child
+import react.functionalComponent
+import react.useEffectWithCleanup
+import react.useState
 import styled.css
 import styled.styledDiv
+import styled.styledImg
 
 fun RBuilder.Search() =
     child(SearchComponent)
@@ -23,19 +30,18 @@ private val SearchComponent = functionalComponent<RProps> {
     val scope = createComponentScope()
 
     val (query, setQuery) = useState("")
-    val (isLoading, setLoading) = useState(false)
     val (response, setResponse) = useState<SearchResponse?>(null)
 
     useEffectWithCleanup(listOf(query)) {
-        if (query.length < 3) return@useEffectWithCleanup {}
-        setResponse(null)
-        setLoading(true)
+        if (query.length < 3) {
+            setResponse(null)
+            return@useEffectWithCleanup {}
+        }
         val job = scope.launch(CoroutineExceptionHandler { _, e ->
             if (e is CancellationException) return@CoroutineExceptionHandler
             console.error("Error in search", e)
         }) {
             setResponse(Kita.search.search(query))
-            setLoading(false)
         }
         return@useEffectWithCleanup { job.cancel("Cancelled by cleanup") }
     }
@@ -49,16 +55,14 @@ private val SearchComponent = functionalComponent<RProps> {
             placeholder = "Query",
             value = query
         )
-        if (isLoading) {
-            p {
-                +"Chargement…"
-            }
-        } else {
-            response?.movies?.forEach {
-                p {
-                    +it.title
+        response?.movies?.forEach {
+            styledImg {
+                css {
+                    width = 5.em
                 }
+                it.posterUrl?.let { attrs.src = it }
             }
         }
     }
+
 }
