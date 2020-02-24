@@ -2,18 +2,16 @@
 
 package fr.ribesg.kita.client.web.components.auth
 
-import fr.ribesg.kita.client.common.Apis
+import fr.ribesg.kita.client.common.Kita
 import fr.ribesg.kita.client.web.components.ui.Button
 import fr.ribesg.kita.client.web.components.ui.Input
 import fr.ribesg.kita.client.web.components.ui.Link
 import fr.ribesg.kita.client.web.components.util.createComponentScope
-import fr.ribesg.kita.common.model.AuthTokens
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import kotlinx.css.*
 import kotlinx.css.Display.flex
 import kotlinx.css.FlexDirection.column
-import kotlinx.css.display
-import kotlinx.css.flexDirection
 import kotlinx.html.InputType
 import react.*
 import react.dom.h3
@@ -21,31 +19,36 @@ import styled.css
 import styled.styledDiv
 import kotlin.browser.window
 
-interface AuthProps : RProps {
-    var title: String
-}
-
-fun RBuilder.Auth(title: String) =
+fun RBuilder.Auth(
+    title: String,
+    authenticationListener: (isAuthenticated: Boolean) -> Unit
+) =
     child(AuthComponent) {
         attrs.title = title
+        attrs.authenticationListener = authenticationListener
     }
+
+private interface AuthProps : RProps {
+    var title: String
+    var authenticationListener: (isAuthenticated: Boolean) -> Unit
+}
 
 private enum class AuthAction(
     val displayName: String,
     val switchText: String,
-    val execute: suspend (login: String, password: String) -> AuthTokens
+    val execute: suspend (login: String, password: String) -> Unit
 ) {
 
     LOGIN(
         "Login",
         "No account? Register!",
-        Apis.auth::login
+        Kita.auth::login
     ),
 
     REGISTER(
         "Register",
         "Already have an account?",
-        Apis.auth::register
+        Kita.auth::register
     ),
 
     ;
@@ -56,7 +59,7 @@ private enum class AuthAction(
 }
 
 private val AuthComponent = functionalComponent<AuthProps> { props ->
-    
+
     val scope = createComponentScope()
 
     val (action, setAction) = useState(AuthAction.LOGIN)
@@ -76,10 +79,9 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
             window.alert("Failed to ${action.displayName}: $error")
         }) {
             setLoading(true)
-            val tokens = action.execute(loginInput, passwordInput)
-            console.info("accessToken=${tokens.accessToken}")
-            console.info("refreshToken=${tokens.refreshToken}")
-            setLoading(false)
+            action.execute(loginInput, passwordInput)
+            console.info("${action.displayName} successful")
+            props.authenticationListener(true)
         }
     }
 
@@ -91,6 +93,10 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
         css {
             display = flex
             flexDirection = column
+            padding(.5.em)
+            children {
+                margin(.5.em)
+            }
         }
         h3 {
             +props.title

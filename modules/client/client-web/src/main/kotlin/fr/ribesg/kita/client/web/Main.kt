@@ -7,6 +7,6 @@ import kotlin.browser.document
 
 fun main() {
     val root = document.getElementById("kita")
-        ?: throw IllegalStateException("div#kita not found")
+        ?: throw IllegalStateException("div#kita not found, cannot attach Kita applicationto DOM")
     render(root, handler = RBuilder::Root)
 }

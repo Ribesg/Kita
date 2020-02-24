@@ -17,7 +17,7 @@ data class TmdbApiSearchMovieResult(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("release_date")
-    val releaseDate: String,
+    val releaseDate: String? = null,
     val title: String,
     @SerialName("vote_average")
     val voteAverage: Double,

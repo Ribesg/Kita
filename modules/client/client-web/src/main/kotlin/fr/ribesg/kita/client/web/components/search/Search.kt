@@ -1,85 +1,64 @@
+@file:Suppress("FunctionName")
+
 package fr.ribesg.kita.client.web.components.search
 
-import fr.ribesg.kita.client.web.components.search.form.searchForm
-import fr.ribesg.kita.client.web.components.search.results.searchResults
-import fr.ribesg.kita.common.Paths
+import fr.ribesg.kita.client.common.Kita
+import fr.ribesg.kita.client.web.components.ui.Input
+import fr.ribesg.kita.client.web.components.util.createComponentScope
 import fr.ribesg.kita.common.model.SearchResponse
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.js.Js
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.css.*
-import kotlinx.css.Display.*
-import kotlinx.css.FlexDirection.*
 import react.*
-import react.dom.h1
+import react.dom.p
 import styled.css
 import styled.styledDiv
 
-class SearchComponent : RComponent<RProps, SearchComponent.State>() {
+fun RBuilder.Search() =
+    child(SearchComponent)
 
-    private val http = HttpClient(Js) {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
+private val SearchComponent = functionalComponent<RProps> {
+
+    val scope = createComponentScope()
+
+    val (query, setQuery) = useState("")
+    val (isLoading, setLoading) = useState(false)
+    val (response, setResponse) = useState<SearchResponse?>(null)
+
+    useEffectWithCleanup(listOf(query)) {
+        if (query.length < 3) return@useEffectWithCleanup {}
+        setResponse(null)
+        setLoading(true)
+        val job = scope.launch(CoroutineExceptionHandler { _, e ->
+            if (e is CancellationException) return@CoroutineExceptionHandler
+            console.error("Error in search", e)
+        }) {
+            setResponse(Kita.search.search(query))
+            setLoading(false)
         }
+        return@useEffectWithCleanup { job.cancel("Cancelled by cleanup") }
     }
 
-    init {
-        state = State("", null, false)
-    }
+    styledDiv {
+        css {
 
-    override fun RBuilder.render() {
-        styledDiv {
-            css {
-                width = 100.pct
-                maxHeight = 100.pct
-                display = flex
-                flexDirection = column
+        }
+        Input(
+            onInputTextChanged = setQuery,
+            placeholder = "Query",
+            value = query
+        )
+        if (isLoading) {
+            p {
+                +"Chargement…"
             }
-            h1 { +"Search movies on TMDB" }
-            searchForm(
-                isInputEnabled = !state.isSearching,
-                isButtonEnabled = state.query.isNotEmpty() && !state.isSearching,
-                onInputChanged = ::onInputChanged,
-                onSearchTriggered = ::onSearchTriggered
-            )
-            searchResults(state.results)
-        }
-    }
-
-    private fun onInputChanged(text: String) =
-        setState { query = text }
-
-    private fun onSearchTriggered() =
-        setState {
-            results = null
-            isSearching = true
-        }
-
-    private fun performSearch() {
-        GlobalScope.launch {
-            val searchResponse = http.get<SearchResponse>(Paths.search) {
-                parameter("query", state.query)
-            }
-            setState {
-                results = searchResponse
-                isSearching = false
+        } else {
+            response?.movies?.forEach {
+                p {
+                    +it.title
+                }
             }
         }
     }
-
-    class State(
-        var query: String,
-        var results: SearchResponse?,
-        var isSearching: Boolean
-    ) : RState
-
-}
-
-fun RBuilder.search() {
-    child(SearchComponent::class) {}
 }

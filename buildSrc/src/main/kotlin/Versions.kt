@@ -7,8 +7,8 @@ object Versions {
     // General
     val java = JavaVersion.VERSION_1_8
     val kotlin = "1.3.61"
-    val gradle = "6.1.1"
-    val versions = "0.27.0"
+    val gradle = "6.2"
+    val versions = "0.28.0"
 
     // Common
     val coroutines = "1.3.3"

@@ -1,10 +1,8 @@
-package fr.ribesg.kita.client.common.api
+package fr.ribesg.kita.client.common.auth
 
+import fr.ribesg.kita.client.common.http
 import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.AuthTokens
-import io.ktor.client.HttpClient
-import io.ktor.client.features.json.Json
-import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
 
@@ -18,13 +16,7 @@ interface AuthApi {
 
 }
 
-class AuthApiImpl : AuthApi {
-
-    private val http = HttpClient {
-        Json {
-            serializer = KotlinxSerializer()
-        }
-    }
+internal class AuthApiImpl : AuthApi {
 
     override suspend fun login(login: String, password: String) =
         http.submitForm<AuthTokens>(Paths.Auth.login, Parameters.build {

@@ -64,10 +64,27 @@ tasks.create<Copy>("copyWebClient") {
     val webClientProjectPath = ":modules:client:client-web"
     val webClientProject = project(webClientProjectPath)
     dependsOn("$webClientProjectPath:build")
-    from(webClientProject.buildDir.resolve("distributions")) {
-        include("*.js")
+
+    val destinationDir = buildDir
+        .resolve("resources")
+        .resolve("main")
+        .resolve("assets")
+
+    doFirst {
+        destinationDir
+            .listFiles { _, name ->
+                name.startsWith(Build.name) && name.endsWith(".js")
+            }
+            ?.forEach { file ->
+                file.delete()
+            }
     }
-    into(buildDir.resolve("resources").resolve("main").resolve("assets"))
+
+    from(webClientProject.buildDir.resolve("distributions")) {
+        include(Build.webClientJsFileName)
+    }
+
+    into(destinationDir)
 }
 
 tasks.getByName<Jar>("jar") {
