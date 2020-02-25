@@ -5,7 +5,10 @@ config.optimization = {
         cacheGroups: {
             vendor: {
                 test: /[\\/]node_modules[\\/]/,
-                name: 'vendors',
+                name: function (module) {
+                    const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                    return `npm.${packageName.replace('@', '')}`;
+                },
                 chunks: 'all'
             }
         }

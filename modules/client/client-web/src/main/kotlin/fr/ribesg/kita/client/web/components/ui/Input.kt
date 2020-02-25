@@ -2,15 +2,12 @@
 
 package fr.ribesg.kita.client.web.components.ui
 
-import kotlinx.css.margin
-import kotlinx.css.px
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onKeyDownFunction
 import org.w3c.dom.events.KeyboardEvent
 import react.RBuilder
-import styled.css
 import styled.styledInput
 
 fun RBuilder.Input(

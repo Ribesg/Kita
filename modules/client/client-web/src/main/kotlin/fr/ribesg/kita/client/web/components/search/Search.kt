@@ -12,14 +12,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.css.em
 import kotlinx.css.width
-import react.RBuilder
-import react.RProps
-import react.child
-import react.functionalComponent
-import react.useEffectWithCleanup
-import react.useState
+import react.*
+import react.dom.div
 import styled.css
-import styled.styledDiv
 import styled.styledImg
 
 fun RBuilder.Search() =
@@ -46,21 +41,19 @@ private val SearchComponent = functionalComponent<RProps> {
         return@useEffectWithCleanup { job.cancel("Cancelled by cleanup") }
     }
 
-    styledDiv {
-        css {
-
-        }
+    div {
         Input(
             onInputTextChanged = setQuery,
             placeholder = "Query",
             value = query
         )
-        response?.movies?.forEach {
-            styledImg {
-                css {
-                    width = 5.em
+        response?.movies?.forEach { movie ->
+            movie.posterUrl?.let { src ->
+                styledImg(src = src) {
+                    css {
+                        width = 7.5.em
+                    }
                 }
-                it.posterUrl?.let { attrs.src = it }
             }
         }
     }
