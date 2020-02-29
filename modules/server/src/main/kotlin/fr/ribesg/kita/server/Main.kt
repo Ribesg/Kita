@@ -6,5 +6,5 @@ import io.ktor.server.engine.embeddedServer
 
 fun main() {
     @Suppress("EXPERIMENTAL_API_USAGE")
-    embeddedServer(CIO, module = Application::kita).start(true)
+    embeddedServer(CIO, port = 12345, module = Application::kita).start(true)
 }
