@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package fr.ribesg.kita.client.web.components.ui
+package fr.ribesg.kita.client.web.components.common
 
 import kotlinx.html.INPUT
 import kotlinx.html.InputType

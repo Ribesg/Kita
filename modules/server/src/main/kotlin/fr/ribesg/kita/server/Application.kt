@@ -24,7 +24,6 @@ import io.ktor.routing.routing
 import io.ktor.serialization.serialization
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
-import org.koin.Logger.slf4jLogger
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
@@ -50,7 +49,6 @@ fun Application.kita() {
     }
 
     install(Koin) {
-        slf4jLogger()
         modules(module(moduleDeclaration = Module::components))
     }
 

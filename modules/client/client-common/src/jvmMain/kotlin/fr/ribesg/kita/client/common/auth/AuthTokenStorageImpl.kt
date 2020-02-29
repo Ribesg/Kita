@@ -32,4 +32,9 @@ internal actual class AuthTokenStorageImpl : AuthTokenStorage {
             null
         }
 
+    override fun clearTokens() {
+        File(FILE_ACCESS_TOKEN).delete()
+        File(FILE_REFRESH_TOKEN).delete()
+    }
+
 }

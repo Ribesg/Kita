@@ -7,7 +7,7 @@ object Versions {
     // General
     val java = JavaVersion.VERSION_1_8
     val kotlin = "1.3.61"
-    val gradle = "6.2"
+    val gradle = "6.2.1"
     val versions = "0.28.0"
 
     // Common
@@ -17,19 +17,19 @@ object Versions {
     // JVM
     val bouncyCastle = "1.64"
     val jackson = "2.10.2"
-    val koin = "2.0.1"
+    val koin = "2.1.1"
     val ktor = "1.3.1"
     val logback = "1.2.3"
     val sqldelight = "1.2.2"
 
     // JS
     val redux = "4.0.0"
-    val react = "16.9.0"
+    val react = "16.13.0"
     val reactRedux = "5.0.7"
     val reactRouter = "4.3.1"
     val inlineStylePrefixer = "5.1.0"
     val styledComponents = "4.4.0"
-    val jetbrainsWrapper = "pre.91"
+    val jetbrainsWrapper = "pre.92"
     val kotlinCss = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinCssJs = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinExtensions = "1.0.1-$jetbrainsWrapper-kotlin-$kotlin"
@@ -40,7 +40,7 @@ object Versions {
     val reactRouterWrapper = "$reactRouter-$jetbrainsWrapper-kotlin-$kotlin"
 
     // Android
-    val androidPlugin = "3.5.3"
+    val androidPlugin = "3.6.1"
     val androidMinSdk = 23
     val androidSdk = 29
 

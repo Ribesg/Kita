@@ -12,6 +12,8 @@ interface AuthService {
 
     suspend fun register(login: String, password: String)
 
+    fun logout()
+
 }
 
 internal class AuthServiceImpl(
@@ -37,6 +39,10 @@ internal class AuthServiceImpl(
 
     override suspend fun register(login: String, password: String) {
         authTokenStorage.saveTokens(authApi.register(login, password))
+    }
+
+    override fun logout() {
+        authTokenStorage.clearTokens()
     }
 
 }

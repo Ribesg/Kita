@@ -1,35 +1,43 @@
 @file:Suppress("FunctionName")
 
-package fr.ribesg.kita.client.web.components.auth
+package fr.ribesg.kita.client.web.components
 
 import fr.ribesg.kita.client.common.Kita
-import fr.ribesg.kita.client.web.components.ui.Button
-import fr.ribesg.kita.client.web.components.ui.Input
-import fr.ribesg.kita.client.web.components.ui.Link
+import fr.ribesg.kita.client.web.AuthAction.SetAuthenticated
+import fr.ribesg.kita.client.web.components.common.Button
+import fr.ribesg.kita.client.web.components.common.Input
+import fr.ribesg.kita.client.web.components.common.Link
 import fr.ribesg.kita.client.web.components.util.createComponentScope
+import fr.ribesg.kita.client.web.useAuthStore
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.css.*
+import kotlinx.css.Align
+import kotlinx.css.Display
+import kotlinx.css.FlexDirection
+import kotlinx.css.JustifyContent
+import kotlinx.css.alignItems
+import kotlinx.css.display
+import kotlinx.css.em
+import kotlinx.css.flexDirection
+import kotlinx.css.height
+import kotlinx.css.justifyContent
+import kotlinx.css.margin
+import kotlinx.css.padding
+import kotlinx.css.pct
 import kotlinx.html.InputType
-import react.*
+import react.RBuilder
+import react.RProps
+import react.child
 import react.dom.h3
+import react.functionalComponent
+import react.router.dom.redirect
+import react.useState
 import styled.css
 import styled.styledDiv
 import kotlin.browser.window
 
-fun RBuilder.Auth(
-    title: String,
-    authenticationListener: (isAuthenticated: Boolean) -> Unit
-) =
-    child(AuthComponent) {
-        attrs.title = title
-        attrs.authenticationListener = authenticationListener
-    }
-
-private interface AuthProps : RProps {
-    var title: String
-    var authenticationListener: (isAuthenticated: Boolean) -> Unit
-}
+fun RBuilder.auth() =
+    child(AuthComponent)
 
 private enum class AuthAction(
     val displayName: String,
@@ -56,7 +64,7 @@ private enum class AuthAction(
 
 }
 
-private val AuthComponent = functionalComponent<AuthProps> { props ->
+private val AuthComponent = functionalComponent<RProps> {
 
     val scope = createComponentScope()
 
@@ -65,6 +73,13 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
     val (passwordInput, setPasswordInput) = useState("")
     val (confirmPasswordInput, setConfirmPasswordInput) = useState("")
     val (isLoading, setLoading) = useState(false)
+
+    val (auth, authDispatch) = useAuthStore()
+
+    if (auth.isAuthenticated) {
+        redirect("*", "/")
+        return@functionalComponent
+    }
 
     val isActionButtonEnabled = {
         loginInput.isNotBlank() && passwordInput.isNotEmpty()
@@ -79,7 +94,7 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
             setLoading(true)
             action.execute(loginInput, passwordInput)
             console.info("${action.displayName} successful")
-            props.authenticationListener(true)
+            authDispatch(SetAuthenticated(true))
         }
     }
 
@@ -100,7 +115,7 @@ private val AuthComponent = functionalComponent<AuthProps> { props ->
             }
         }
         h3 {
-            +props.title
+            +"Authentication"
         }
         Input(
             enabled = !isLoading,

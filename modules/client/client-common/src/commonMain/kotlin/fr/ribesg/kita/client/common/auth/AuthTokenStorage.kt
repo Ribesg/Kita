@@ -10,6 +10,8 @@ interface AuthTokenStorage {
 
     fun getRefreshToken(): String?
 
+    fun clearTokens()
+
 }
 
 internal expect class AuthTokenStorageImpl() : AuthTokenStorage

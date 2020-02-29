@@ -2,10 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
-repositories {
-    maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
-}
-
 plugins {
     kotlin("js")
 }
@@ -18,13 +14,13 @@ kotlin {
                 outputFileName = Build.name + ".[contentHash].js"
             }
         }
+        useCommonJs()
     }
 
     sourceSets["main"].dependencies {
 
         api(project(":modules:common"))
         api(project(":modules:client:client-common"))
-        api(project(":modules:client:client-web-npm-dependencies"))
 
         api(kotlin("stdlib-js"))
 
@@ -37,6 +33,19 @@ kotlin {
         api("org.jetbrains:kotlin-css:${Versions.kotlinCss}")
         api("org.jetbrains:kotlin-css-js:${Versions.kotlinCssJs}")
         api("org.jetbrains:kotlin-styled:${Versions.kotlinStyled}")
+
+        api(npm("core-js"))
+        api(npm("redux", Versions.redux))
+        api(npm("react", Versions.react))
+        api(npm("react-redux", Versions.reactRedux))
+        api(npm("react-dom", Versions.react))
+        api(npm("react-router-dom", Versions.reactRouter))
+        api(npm("inline-style-prefixer", Versions.inlineStylePrefixer))
+        api(npm("styled-components", Versions.styledComponents))
+
+        api(npm("abort-controller"))
+        // TODO Workaround for https://github.com/Kotlin/kotlinx-io/issues/57
+        api(npm("text-encoding"))
 
     }
 

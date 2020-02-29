@@ -30,6 +30,8 @@ dependencies {
     api("io.ktor:ktor-serialization:${Versions.ktor}")
     api("io.ktor:ktor-server-cio:${Versions.ktor}")
 
+    api("org.jetbrains:kotlin-css-jvm:${Versions.kotlinCss}")
+
     api("com.squareup.sqldelight:sqlite-driver:${Versions.sqldelight}")
 
     api("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")

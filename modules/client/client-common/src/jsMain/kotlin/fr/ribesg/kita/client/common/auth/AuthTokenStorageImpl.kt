@@ -21,4 +21,9 @@ internal actual class AuthTokenStorageImpl : AuthTokenStorage {
     override fun getRefreshToken() =
         localStorage.getItem(KEY_REFRESH_TOKEN)
 
+    override fun clearTokens() {
+        localStorage.removeItem(KEY_ACCESS_TOKEN)
+        localStorage.removeItem(KEY_REFRESH_TOKEN)
+    }
+
 }
