@@ -24,9 +24,6 @@ private val ContentComponent = functionalComponent<RProps> {
         css {
             display = Display.flex
             flexDirection = FlexDirection.column
-            lastChild {
-                flexGrow = 1.0
-            }
         }
         search()
     }

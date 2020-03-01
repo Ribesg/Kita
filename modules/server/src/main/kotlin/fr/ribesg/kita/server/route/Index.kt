@@ -45,6 +45,11 @@ fun Routing.index() {
                         height = 100.pct
                     }
                 }
+                application.listJarFileResources("assets/js").forEach {
+                    script("text/javascript", it) {
+                        async = true
+                    }
+                }
             }
             body {
                 div {
@@ -61,9 +66,6 @@ fun Routing.index() {
                             }
                         }
                     }
-                }
-                application.listJarFileResources("assets/js").forEach {
-                    script("text/javascript", it) {}
                 }
             }
         }
