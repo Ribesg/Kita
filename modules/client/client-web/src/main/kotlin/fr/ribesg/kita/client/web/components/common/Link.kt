@@ -6,6 +6,7 @@ import kotlinx.css.TextAlign.center
 import kotlinx.css.em
 import kotlinx.css.fontSize
 import kotlinx.css.textAlign
+import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import styled.css
@@ -21,6 +22,7 @@ fun RBuilder.Link(
             textAlign = center
         }
         +text
+        attrs.classes += listOf("matter-link", "matter-body1")
         attrs.href = ""
         onClick?.let { callback ->
             attrs.onClickFunction = {

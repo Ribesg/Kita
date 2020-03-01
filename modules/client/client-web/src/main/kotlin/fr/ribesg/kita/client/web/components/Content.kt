@@ -28,7 +28,6 @@ private val ContentComponent = functionalComponent<RProps> {
                 flexGrow = 1.0
             }
         }
-        toolbar()
         search()
     }
 

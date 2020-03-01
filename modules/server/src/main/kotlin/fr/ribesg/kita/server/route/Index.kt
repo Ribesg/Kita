@@ -9,14 +9,21 @@ import io.ktor.http.ContentType
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlinx.css.CSSBuilder
+import kotlinx.css.Position
 import kotlinx.css.height
+import kotlinx.css.left
 import kotlinx.css.pct
+import kotlinx.css.position
+import kotlinx.css.properties.transform
+import kotlinx.css.properties.translate
+import kotlinx.css.top
 import kotlinx.css.width
 import kotlinx.html.FlowOrMetaDataContent
 import kotlinx.html.body
 import kotlinx.html.div
 import kotlinx.html.head
 import kotlinx.html.id
+import kotlinx.html.progress
 import kotlinx.html.script
 import kotlinx.html.style
 import kotlinx.html.styleLink
@@ -31,6 +38,7 @@ fun Routing.index() {
             head {
                 title("Kita ${meta.version}")
                 styleLink("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css")
+                styleLink("https://res.cloudinary.com/finnhvman/raw/upload/matter/matter-0.2.2.min.css")
                 styleCss {
                     rule("html, body, #kita") {
                         width = 100.pct
@@ -41,6 +49,18 @@ fun Routing.index() {
             body {
                 div {
                     id = "kita"
+                    progress("matter-progress-circular") {
+                        styleCss {
+                            rule("progress") {
+                                position = Position.absolute
+                                left = 50.pct
+                                top = 50.pct
+                                transform {
+                                    translate((-50).pct, (-50).pct)
+                                }
+                            }
+                        }
+                    }
                 }
                 application.listJarFileResources("assets/js").forEach {
                     script("text/javascript", it) {}

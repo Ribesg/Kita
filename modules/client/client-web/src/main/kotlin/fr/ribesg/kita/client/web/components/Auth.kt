@@ -25,6 +25,7 @@ import kotlinx.css.margin
 import kotlinx.css.padding
 import kotlinx.css.pct
 import kotlinx.html.InputType
+import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.child
@@ -116,17 +117,18 @@ private val AuthComponent = functionalComponent<RProps> {
         }
         h3 {
             +"Authentication"
+            attrs.classes += "matter-h3"
         }
         Input(
             enabled = !isLoading,
             onInputTextChanged = setLoginInput,
-            placeholder = "Login",
+            label = "Login",
             value = loginInput
         )
         Input(
             enabled = !isLoading,
             onInputTextChanged = setPasswordInput,
-            placeholder = "Password",
+            label = "Password",
             value = passwordInput,
             type = InputType.password
         )
@@ -134,7 +136,7 @@ private val AuthComponent = functionalComponent<RProps> {
             Input(
                 enabled = !isLoading,
                 onInputTextChanged = setConfirmPasswordInput,
-                placeholder = "Password confirmation",
+                label = "Password confirmation",
                 value = confirmPasswordInput,
                 type = InputType.password
             )
