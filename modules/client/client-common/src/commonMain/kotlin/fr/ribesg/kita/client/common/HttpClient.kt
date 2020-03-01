@@ -14,3 +14,5 @@ internal val http = HttpClient {
         serializer = KotlinxSerializer()
     }
 }
+
+internal expect val baseUrl: String

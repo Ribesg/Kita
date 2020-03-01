@@ -1,5 +1,6 @@
 package fr.ribesg.kita.client.common.search
 
+import fr.ribesg.kita.client.common.baseUrl
 import fr.ribesg.kita.client.common.http
 import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.SearchResponse
@@ -15,7 +16,7 @@ interface SearchApi {
 internal class SearchApiImpl : SearchApi {
 
     override suspend fun search(query: String): SearchResponse =
-        http.get(Paths.search) {
+        http.get(baseUrl + Paths.search) {
             parameter("query", query)
         }
 

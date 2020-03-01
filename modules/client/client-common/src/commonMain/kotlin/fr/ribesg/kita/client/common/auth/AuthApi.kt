@@ -1,5 +1,6 @@
 package fr.ribesg.kita.client.common.auth
 
+import fr.ribesg.kita.client.common.baseUrl
 import fr.ribesg.kita.client.common.http
 import fr.ribesg.kita.common.Paths
 import fr.ribesg.kita.common.model.AuthTokens
@@ -19,18 +20,18 @@ interface AuthApi {
 internal class AuthApiImpl : AuthApi {
 
     override suspend fun login(login: String, password: String) =
-        http.submitForm<AuthTokens>(Paths.Auth.login, Parameters.build {
+        http.submitForm<AuthTokens>(baseUrl + Paths.Auth.login, Parameters.build {
             append("login", login)
             append("password", password)
         })
 
     override suspend fun refresh(refreshToken: String) =
-        http.submitForm<AuthTokens>(Paths.Auth.refresh, Parameters.build {
+        http.submitForm<AuthTokens>(baseUrl + Paths.Auth.refresh, Parameters.build {
             append("refreshToken", refreshToken)
         })
 
     override suspend fun register(login: String, password: String) =
-        http.submitForm<AuthTokens>(Paths.Auth.register, Parameters.build {
+        http.submitForm<AuthTokens>(baseUrl + Paths.Auth.register, Parameters.build {
             append("login", login)
             append("password", password)
         })
