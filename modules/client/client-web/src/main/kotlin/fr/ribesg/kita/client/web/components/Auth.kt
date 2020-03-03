@@ -11,30 +11,11 @@ import fr.ribesg.kita.client.web.components.util.createComponentScope
 import fr.ribesg.kita.client.web.useAuthStore
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.css.Align
-import kotlinx.css.Display
-import kotlinx.css.FlexDirection
-import kotlinx.css.JustifyContent
-import kotlinx.css.alignItems
-import kotlinx.css.display
-import kotlinx.css.em
-import kotlinx.css.flexDirection
-import kotlinx.css.height
-import kotlinx.css.justifyContent
-import kotlinx.css.margin
-import kotlinx.css.padding
-import kotlinx.css.pct
 import kotlinx.html.InputType
-import kotlinx.html.classes
-import react.RBuilder
-import react.RProps
-import react.child
+import react.*
+import react.dom.div
 import react.dom.h3
-import react.functionalComponent
 import react.router.dom.redirect
-import react.useState
-import styled.css
-import styled.styledDiv
 import kotlin.browser.window
 
 fun RBuilder.auth() =
@@ -102,54 +83,61 @@ private val AuthComponent = functionalComponent<RProps> {
     val onSwitchLinkClicked: () -> Unit = {
         setAction(action.other)
     }
-
-    styledDiv {
-        css {
-            display = Display.flex
-            flexDirection = FlexDirection.column
-            alignItems = Align.center
-            justifyContent = JustifyContent.center
-            height = 100.pct
-            padding(.5.em)
-            children {
-                margin(.5.em)
+    div("columns is-centered is-vcentered") {
+        div("column is-one-quarter") {
+            div("box") {
+                div("field is-grouped is-grouped-centered") {
+                    div("control") {
+                        h3("title") {
+                            +"Authentication"
+                        }
+                    }
+                }
+                Input(
+                    icon = "fas fa-user",
+                    isDisabled = isLoading,
+                    onInputTextChanged = setLoginInput,
+                    label = "Login",
+                    value = loginInput
+                )
+                Input(
+                    icon = "fas fa-lock",
+                    isDisabled = isLoading,
+                    onInputTextChanged = setPasswordInput,
+                    label = "Password",
+                    value = passwordInput,
+                    type = InputType.password
+                )
+                if (action == AuthAction.REGISTER) {
+                    Input(
+                        icon = "fas fa-lock",
+                        isDisabled = isLoading,
+                        onInputTextChanged = setConfirmPasswordInput,
+                        label = "Password confirmation",
+                        value = confirmPasswordInput,
+                        type = InputType.password
+                    )
+                }
+                div("field is-grouped is-grouped-centered") {
+                    div("control") {
+                        Button(
+                            isDisabled = !isActionButtonEnabled() || isLoading,
+                            isPrimary = true,
+                            onClick = onActionButtonClicked,
+                            text = action.displayName
+                        )
+                    }
+                }
+                div("field is-grouped is-grouped-centered") {
+                    div("control") {
+                        Link(
+                            text = action.switchText,
+                            onClick = onSwitchLinkClicked
+                        )
+                    }
+                }
             }
         }
-        h3 {
-            +"Authentication"
-            attrs.classes += "matter-h3"
-        }
-        Input(
-            enabled = !isLoading,
-            onInputTextChanged = setLoginInput,
-            label = "Login",
-            value = loginInput
-        )
-        Input(
-            enabled = !isLoading,
-            onInputTextChanged = setPasswordInput,
-            label = "Password",
-            value = passwordInput,
-            type = InputType.password
-        )
-        if (action == AuthAction.REGISTER) {
-            Input(
-                enabled = !isLoading,
-                onInputTextChanged = setConfirmPasswordInput,
-                label = "Password confirmation",
-                value = confirmPasswordInput,
-                type = InputType.password
-            )
-        }
-        Button(
-            enabled = isActionButtonEnabled() && !isLoading,
-            onClick = onActionButtonClicked,
-            text = action.displayName
-        )
-        Link(
-            text = action.switchText,
-            onClick = onSwitchLinkClicked
-        )
     }
 
 }

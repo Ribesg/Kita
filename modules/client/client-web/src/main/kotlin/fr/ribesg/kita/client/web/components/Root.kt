@@ -3,17 +3,10 @@
 package fr.ribesg.kita.client.web.components
 
 import fr.ribesg.kita.client.web.authStore
+import fr.ribesg.kita.client.web.components.search.search
 import fr.ribesg.kita.client.web.useAuthState
-import react.RBuilder
-import react.RProps
-import react.ReactElement
-import react.child
-import react.functionalComponent
-import react.router.dom.RouteProps
-import react.router.dom.browserRouter
-import react.router.dom.redirect
-import react.router.dom.route
-import react.router.dom.switch
+import react.*
+import react.router.dom.*
 
 fun RBuilder.root() {
     child(RootComponent)
@@ -23,12 +16,13 @@ private val RootComponent = functionalComponent<RProps> {
     authStore {
         browserRouter {
             switch {
-                privateRoute("/", exact = true) {
-                    content()
+                privateRoute("/search", exact = true) {
+                    search()
                 }
                 route("/login") {
                     auth()
                 }
+                redirect("/", "/search")
             }
         }
     }

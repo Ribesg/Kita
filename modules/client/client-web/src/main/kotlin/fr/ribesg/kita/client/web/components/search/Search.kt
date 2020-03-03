@@ -23,12 +23,8 @@ import kotlinx.css.flexDirection
 import kotlinx.css.flexGrow
 import kotlinx.css.margin
 import kotlinx.css.padding
-import react.RBuilder
-import react.RProps
-import react.child
-import react.functionalComponent
-import react.useEffectWithCleanup
-import react.useState
+import kotlinx.html.InputType
+import react.*
 import styled.css
 import styled.styledDiv
 
@@ -80,11 +76,13 @@ private val SearchComponent = functionalComponent<RProps> {
                 }
             }
             Input(
+                icon = "fas fa-search",
                 onInputTextChanged = setQuery,
                 label = "Query",
+                type = InputType.search,
                 value = query
             )
-            Button("Logout", type = "outlined") {
+            Button("Logout") {
                 Kita.auth.logout()
                 authDispatch(AuthAction.SetAuthenticated(false))
             }

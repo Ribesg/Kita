@@ -9,17 +9,17 @@ import styled.styledButton
 
 fun RBuilder.Button(
     text: String,
-    type: String = "container",
-    enabled: Boolean = true,
+    isDisabled: Boolean = false,
+    isInverted: Boolean = false,
+    isPrimary: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
-    require(type in listOf("container", "outlined", "text", "unelevated")) {
-        "Button.type should be one of container/outlined/text/unelevated, invalid value $type"
-    }
     styledButton {
         +text
-        attrs.classes += "matter-button-$type"
-        attrs.disabled = !enabled
+        attrs.classes += "button"
+        if (isInverted) attrs.classes += "is-inverted"
+        if (isPrimary) attrs.classes += "is-primary"
+        attrs.disabled = isDisabled
         onClick?.let { callback ->
             attrs.onClickFunction = { callback() }
         }
