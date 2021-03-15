@@ -1,9 +1,9 @@
 package fr.ribesg.kita.client.web
 
-import fr.ribesg.kita.client.web.components.root
+import fr.ribesg.kita.client.web.component.root
+import kotlinx.browser.document
 import react.RBuilder
 import react.dom.render
-import kotlin.browser.document
 
 fun main() {
     val root = document.getElementById("kita")

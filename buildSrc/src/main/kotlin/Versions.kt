@@ -6,42 +6,45 @@ object Versions {
 
     // General
     val java = JavaVersion.VERSION_1_8
-    val kotlin = "1.3.61"
-    val gradle = "6.2.1"
-    val versions = "0.28.0"
+    val kotlin = "1.4.31"
+    val gradle = "6.8.3"
+    val versions = "0.38.0"
 
     // Common
-    val coroutines = "1.3.3"
-    val serialization = "0.14.0"
+    val coroutines = "1.4.2-native-mt"
+    val serialization = "1.1.0"
 
     // JVM
-    val bouncyCastle = "1.64"
-    val jackson = "2.10.2"
-    val koin = "2.1.1"
-    val ktor = "1.3.1"
+    val bouncyCastle = "1.68"
+    val jackson = "2.12.2"
+    val koin = "2.2.2"
+    val ktor = "1.5.2"
     val logback = "1.2.3"
-    val sqldelight = "1.2.2"
+    val sqldelight = "1.4.4"
 
     // JS
-    val redux = "4.0.0"
-    val react = "16.13.0"
-    val reactRedux = "5.0.7"
-    val reactRouter = "4.3.1"
-    val inlineStylePrefixer = "5.1.0"
-    val styledComponents = "4.4.0"
-    val jetbrainsWrapper = "pre.92"
+    val abortController = "3.0.0"
+    val coreJs = "3.9.1"
+    val redux = "4.0.5"
+    val react = "17.0.1"
+    val reactRedux = "7.2.2"
+    val reactRouter = "5.2.0"
+    val inlineStylePrefixer = "6.0.0"
+    val styledComponents = "5.2.1"
+    val textEncoding = "0.7.0"
+    val jetbrainsWrapper = "pre.149"
     val kotlinCss = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinCssJs = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
     val kotlinExtensions = "1.0.1-$jetbrainsWrapper-kotlin-$kotlin"
-    val kotlinStyled = "1.0.0-$jetbrainsWrapper-kotlin-$kotlin"
+    val kotlinStyled = "5.2.1-$jetbrainsWrapper-kotlin-$kotlin"
     val reduxWrapper = "$redux-$jetbrainsWrapper-kotlin-$kotlin"
     val reactWrapper = "$react-$jetbrainsWrapper-kotlin-$kotlin"
     val reactReduxWrapper = "$reactRedux-$jetbrainsWrapper-kotlin-$kotlin"
     val reactRouterWrapper = "$reactRouter-$jetbrainsWrapper-kotlin-$kotlin"
 
     // Android
-    val androidPlugin = "3.6.1"
+    val androidPlugin = "4.0.1"
     val androidMinSdk = 23
-    val androidSdk = 29
+    val androidSdk = 30
 
 }

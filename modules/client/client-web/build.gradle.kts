@@ -1,6 +1,7 @@
 @file:Suppress("ConstantConditionIf")
 
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.Mode.*
 
 plugins {
     kotlin("js")
@@ -8,10 +9,15 @@ plugins {
 
 kotlin {
 
-    target {
+    js {
         browser {
             webpackTask {
+                mode = if (Build.isSnapshot) DEVELOPMENT else PRODUCTION
                 outputFileName = Build.name + ".[contentHash].js"
+                sourceMaps = true
+                doFirst {
+                    destinationDirectory.listFiles()?.forEach { it.delete() }
+                }
             }
         }
         useCommonJs()
@@ -34,7 +40,7 @@ kotlin {
         api("org.jetbrains:kotlin-css-js:${Versions.kotlinCssJs}")
         api("org.jetbrains:kotlin-styled:${Versions.kotlinStyled}")
 
-        api(npm("core-js"))
+        api(npm("core-js", Versions.coreJs))
         api(npm("redux", Versions.redux))
         api(npm("react", Versions.react))
         api(npm("react-redux", Versions.reactRedux))
@@ -43,16 +49,10 @@ kotlin {
         api(npm("inline-style-prefixer", Versions.inlineStylePrefixer))
         api(npm("styled-components", Versions.styledComponents))
 
-        api(npm("abort-controller"))
+        api(npm("abort-controller", Versions.abortController))
         // TODO Workaround for https://github.com/Kotlin/kotlinx-io/issues/57
-        api(npm("text-encoding"))
+        api(npm("text-encoding", Versions.textEncoding))
 
     }
 
-}
-
-tasks.withType<KotlinWebpack> {
-    doFirst {
-        destinationDirectory?.listFiles()?.forEach { it.delete() }
-    }
 }

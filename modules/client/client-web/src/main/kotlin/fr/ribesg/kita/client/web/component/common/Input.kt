@@ -1,17 +1,18 @@
 @file:Suppress("FunctionName")
 
-package fr.ribesg.kita.client.web.components.common
+package fr.ribesg.kita.client.web.component.common
 
 import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.classes
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onKeyDownFunction
+import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import react.RBuilder
 import react.dom.*
 
-fun RBuilder.Input(
+fun RBuilder.input(
     icon: String? = null,
     isDisabled: Boolean = false,
     label: String? = null,
@@ -35,6 +36,9 @@ fun RBuilder.Input(
                 onInputTextChanged?.let { callback ->
                     attrs.onChangeFunction = {
                         callback(it.target.unsafeCast<INPUT>().value)
+                    }
+                    attrs["onAnimationStart"] = { e: Event ->
+                        callback(e.target.unsafeCast<INPUT>().value)
                     }
                 }
                 attrs.disabled = isDisabled

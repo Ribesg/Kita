@@ -12,10 +12,10 @@ import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.serialization.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -49,11 +49,11 @@ class TmdbApiImpl : TmdbApi {
     private var lastConfigurationRetrieval: Instant = Instant.EPOCH
     private lateinit var configuration: TmdbConfiguration
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     private val http = HttpClient(CIO) {
         install(JsonFeature) {
-            @Suppress("EXPERIMENTAL_API_USAGE")
-            serializer = KotlinxSerializer(json = Json(JsonConfiguration(strictMode = false)))
+            serializer = KotlinxSerializer(
+                Json { ignoreUnknownKeys = true }
+            )
         }
         install(Logging) {
             logger = object : Logger {

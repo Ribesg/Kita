@@ -1,12 +1,12 @@
 @file:Suppress("FunctionName")
 
-package fr.ribesg.kita.client.web.components.search
+package fr.ribesg.kita.client.web.component.search
 
 import fr.ribesg.kita.client.common.Kita
 import fr.ribesg.kita.client.web.AuthAction
-import fr.ribesg.kita.client.web.components.common.Button
-import fr.ribesg.kita.client.web.components.common.Input
-import fr.ribesg.kita.client.web.components.util.createComponentScope
+import fr.ribesg.kita.client.web.component.common.button
+import fr.ribesg.kita.client.web.component.common.input
+import fr.ribesg.kita.client.web.component.util.createComponentScope
 import fr.ribesg.kita.client.web.useAuthDispatch
 import fr.ribesg.kita.common.model.SearchResponse
 import kotlinx.coroutines.CancellationException
@@ -75,14 +75,14 @@ private val SearchComponent = functionalComponent<RProps> {
                     margin = .25.em.value
                 }
             }
-            Input(
+            input(
                 icon = "fas fa-search",
                 onInputTextChanged = setQuery,
                 label = "Query",
                 type = InputType.search,
                 value = query
             )
-            Button("Logout") {
+            button("Logout") {
                 Kita.auth.logout()
                 authDispatch(AuthAction.SetAuthenticated(false))
             }

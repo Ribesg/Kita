@@ -19,7 +19,6 @@ import io.ktor.http.ContentType.Application
 import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.time.Instant
@@ -45,11 +44,11 @@ class TvdbApiImpl : TvdbApi {
 
     private var jwtToken: String? = null
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     private val http = HttpClient(CIO) {
         install(JsonFeature) {
-            @Suppress("EXPERIMENTAL_API_USAGE")
-            serializer = KotlinxSerializer(json = Json(JsonConfiguration(strictMode = false)))
+            serializer = KotlinxSerializer(
+                Json { ignoreUnknownKeys = true }
+            )
         }
         install(Logging) {
             logger = object : Logger {

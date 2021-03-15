@@ -1,12 +1,14 @@
 package fr.ribesg.kita.server
 
+import java.time.Duration
+
 interface EnvProperties {
     val jwtAudience: String?
     val jwtIssuer: String?
     val jwtRealm: String?
     val jwtSecret: String?
-    val jwtTokenDurationAccess: Long?
-    val jwtTokenDurationRefresh: Long?
+    val jwtTokenDurationAccess: Duration?
+    val jwtTokenDurationRefresh: Duration?
 }
 
 class EnvPropertiesImpl : EnvProperties {
@@ -35,10 +37,12 @@ class EnvPropertiesImpl : EnvProperties {
     override val jwtSecret: String?
         get() = System.getProperty(JWT_SECRET)
 
-    override val jwtTokenDurationAccess: Long?
-        get() = System.getProperty(JWT_TOKEN_DURATION_ACCESS)?.toLong()
+    override val jwtTokenDurationAccess: Duration?
+        get() = System.getProperty(JWT_TOKEN_DURATION_ACCESS)
+            ?.toLong()?.let { Duration.ofMillis(it) }
 
-    override val jwtTokenDurationRefresh: Long?
-        get() = System.getProperty(JWT_TOKEN_DURATION_REFRESH)?.toLong()
+    override val jwtTokenDurationRefresh: Duration?
+        get() = System.getProperty(JWT_TOKEN_DURATION_REFRESH)
+            ?.toLong()?.let { Duration.ofMillis(it) }
 
 }

@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="fr.ribesg.kita.client.android" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.ribesg.kita.client.android">
+
+    <application>
+        <activity android:name=".DummyActivity" />
+    </application>
+</manifest>

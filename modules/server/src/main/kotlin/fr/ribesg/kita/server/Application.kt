@@ -5,25 +5,16 @@ package fr.ribesg.kita.server
 import fr.ribesg.kita.server.route.routes
 import fr.ribesg.kita.server.util.HttpException
 import fr.ribesg.kita.server.util.Jwt
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
-import io.ktor.features.AutoHeadResponse
-import io.ktor.features.CallLogging
-import io.ktor.features.Compression
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.StatusPages
-import io.ktor.locations.Locations
-import io.ktor.response.respond
-import io.ktor.routing.Routing
-import io.ktor.routing.routing
-import io.ktor.serialization.serialization
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.locations.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.server.engine.BaseApplicationResponse.*
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
@@ -39,13 +30,23 @@ fun Application.kita() {
     install(Locations)
 
     install(StatusPages) {
-        exception<HttpException> { (status) ->
-            call.respond(status)
+        val logger = LoggerFactory.getLogger("Status")
+        exception<HttpException> {
+            logger.error("Error", it)
+            call.respond(it.status)
+        }
+        exception<Throwable> {
+            logger.error("Error", it)
+            try {
+                call.respond(HttpStatusCode.InternalServerError)
+            } catch (e: ResponseAlreadySentException) {
+                // Ignored
+            }
         }
     }
 
     install(ContentNegotiation) {
-        serialization(json = Json(JsonConfiguration.Stable))
+        json()
     }
 
     install(Koin) {
@@ -58,7 +59,9 @@ fun Application.kita() {
             realm = jwt.realm
             verifier(jwt.verifier)
             validate { credential ->
-                if (jwt.audience in credential.payload.audience) JWTPrincipal(credential.payload) else null
+                if (jwt.audience in credential.payload.audience) {
+                    JWTPrincipal(credential.payload)
+                } else null
             }
         }
     }

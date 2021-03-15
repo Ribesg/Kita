@@ -1,7 +1,7 @@
 package fr.ribesg.kita.client.common.auth
 
 import fr.ribesg.kita.common.model.AuthTokens
-import kotlin.browser.localStorage
+import kotlinx.browser.localStorage
 
 internal actual class AuthTokenStorageImpl : AuthTokenStorage {
 

@@ -28,6 +28,8 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
 
+    sourceSets["main"].java.srcDir("src/main/kotlin")
+
 }
 
 dependencies {

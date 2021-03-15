@@ -1,4 +1,4 @@
-package fr.ribesg.kita.client.web.components.util
+package fr.ribesg.kita.client.web.component.util
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope

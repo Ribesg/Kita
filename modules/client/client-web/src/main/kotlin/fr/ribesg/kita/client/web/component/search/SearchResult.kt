@@ -1,4 +1,4 @@
-package fr.ribesg.kita.client.web.components.search
+package fr.ribesg.kita.client.web.component.search
 
 import fr.ribesg.kita.common.model.SearchResponseMovie
 import kotlinx.css.Display
@@ -25,7 +25,7 @@ fun RBuilder.searchResult(movie: SearchResponseMovie) =
         attrs.movie = movie
     }
 
-private interface SearchResultProps : RProps {
+private external interface SearchResultProps : RProps {
     var movie: SearchResponseMovie
 }
 

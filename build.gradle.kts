@@ -14,7 +14,7 @@ allprojects {
     repositories {
         mavenCentral()
         jcenter()
-        maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers/")
+        maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers")
     }
 
 }

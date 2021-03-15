@@ -1,15 +1,15 @@
 rootProject.name = "kita"
 
-include(
-    *findProjects(rootProject.projectDir.resolve("modules"))
-        .map {
-            it
-                .relativeTo(rootProject.projectDir)
-                .invariantSeparatorsPath
-                .replace('/', ':')
-        }
-        .toTypedArray()
-)
+findProjects(rootProject.projectDir.resolve("modules"))
+    .map { projectDirectory ->
+        projectDirectory
+            .relativeTo(rootProject.projectDir)
+            .invariantSeparatorsPath
+            .replace('/', ':')
+    }
+    .forEach { projectPath ->
+        include(projectPath)
+    }
 
 pluginManagement {
     repositories {

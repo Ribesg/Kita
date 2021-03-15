@@ -32,7 +32,6 @@ class MusicBrainzApiImpl(
     private val baseUrl = "https://musicbrainz.org/ws/2"
     private val userAgent = "Kita ${meta.version} ( ${meta.contact} )"
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     private val http = HttpClient(CIO) {
         install(Logging) {
             logger = object : Logger {

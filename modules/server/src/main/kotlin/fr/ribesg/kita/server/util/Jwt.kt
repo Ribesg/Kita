@@ -24,8 +24,8 @@ class JwtImpl(
 
     companion object {
         private const val SUBJECT = "Authentication"
-        private val DEFAULT_TOKEN_DURATION_ACCESS = Duration.ofHours(1).toMillis()
-        private val DEFAULT_TOKEN_DURATION_REFRESH = Duration.ofDays(7).toMillis()
+        private val DEFAULT_TOKEN_DURATION_ACCESS = Duration.ofHours(1)
+        private val DEFAULT_TOKEN_DURATION_REFRESH = Duration.ofDays(7)
     }
 
     override val audience = env.jwtAudience ?: "${meta.name}-debug-audience"
@@ -39,24 +39,24 @@ class JwtImpl(
 
     private val algorithm = Algorithm.HMAC512(secret)
 
-    override val verifier = JWT
+    override val verifier: JWTVerifier = JWT
         .require(algorithm)
         .withAudience(audience)
         .withIssuer(issuer)
         .withSubject(SUBJECT)
         .build()
 
-    override fun newAccessToken(id: String) =
+    override fun newAccessToken(id: String): String =
         newToken(id, accessDuration)
 
-    override fun newRefreshToken(id: String) =
+    override fun newRefreshToken(id: String): String =
         newToken(id, refreshDuration)
 
-    private fun newToken(id: String, duration: Long) = JWT
+    private fun newToken(id: String, duration: Duration) = JWT
         .create()
         .withAudience(audience)
         .withClaim("id", id)
-        .withExpiresAt(Date.from(Instant.now().plusMillis(duration)))
+        .withExpiresAt(Date.from(Instant.now().plus(duration)))
         .withIssuedAt(Date())
         .withIssuer(issuer)
         .withSubject(SUBJECT)

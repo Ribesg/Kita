@@ -8,11 +8,11 @@ plugins {
 
 dependencies {
 
-    api(project(":modules:common"))
+    implementation(project(":modules:common"))
 
     api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
-    api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.serialization}")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.serialization}")
 
     api("ch.qos.logback:logback-classic:${Versions.logback}")
 
@@ -72,22 +72,18 @@ tasks.create<Copy>("copyWebClient") {
         .resolve("js")
 
     doFirst {
-        destinationDir
-            .listFiles { _, name ->
-                name.endsWith(".js")
-            }
-            ?.forEach { file ->
-                file.delete()
-            }
+        destinationDir.deleteRecursively()
+        destinationDir.mkdir()
     }
 
     from(webClientProject.buildDir.resolve("distributions")) {
-        include("*.js")
+        include("*.js", "*.js.map")
     }
 
     into(destinationDir)
 }
 
+@Suppress("UnstableApiUsage")
 tasks.getByName<Jar>("jar") {
     dependsOn("copyWebClient", "createProperties")
     archiveFileName.set("${Build.name}.jar")

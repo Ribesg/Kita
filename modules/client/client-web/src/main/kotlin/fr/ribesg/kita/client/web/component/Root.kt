@@ -1,9 +1,9 @@
 @file:Suppress("FunctionName")
 
-package fr.ribesg.kita.client.web.components
+package fr.ribesg.kita.client.web.component
 
 import fr.ribesg.kita.client.web.authStore
-import fr.ribesg.kita.client.web.components.search.search
+import fr.ribesg.kita.client.web.component.search.search
 import fr.ribesg.kita.client.web.useAuthState
 import react.*
 import react.router.dom.*
@@ -16,13 +16,18 @@ private val RootComponent = functionalComponent<RProps> {
     authStore {
         browserRouter {
             switch {
+                route("/", exact = true) {
+                    home()
+                }
+                route("/login", exact = true) {
+                    auth(false)
+                }
+                route("/register", exact = true) {
+                    auth(true)
+                }
                 privateRoute("/search", exact = true) {
                     search()
                 }
-                route("/login") {
-                    auth()
-                }
-                redirect("/", "/search")
             }
         }
     }
@@ -35,7 +40,7 @@ private fun RBuilder.privateRoute(
     render: () -> ReactElement?
 ) =
     child(PrivateRouteComponent) {
-        attrs.path = path
+        attrs.path = path.split('/').filter(String::isNotEmpty).toTypedArray()
         attrs.exact = exact
         attrs.strict = strict
         attrs.render = { render() }
@@ -46,7 +51,12 @@ private val PrivateRouteComponent = functionalComponent<RouteProps<RProps>> { pr
     val auth = useAuthState()
 
     if (auth.isAuthenticated) {
-        route(props.path, props.exact, props.strict, props.render)
+        route(
+            exact = props.exact,
+            strict = props.strict,
+            render = props.render,
+            path = props.path,
+        )
     } else {
         redirect("*", "/login")
     }

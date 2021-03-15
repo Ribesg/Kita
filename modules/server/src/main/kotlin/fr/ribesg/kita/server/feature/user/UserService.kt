@@ -65,7 +65,7 @@ class UserServiceImpl(
 
     override fun register(login: String, password: String): AuthTokens {
         if (userQueries.getUserByLogin(login).executeAsOneOrNull() != null)
-            throw HttpException(HttpStatusCode.Conflict)
+            throw HttpException(HttpStatusCode.Conflict, "User already exists")
         val id = UUID.randomUUID().toString()
         val (salt, hash) = Crypto.hashNewPassword(password)
         userQueries.createUser(

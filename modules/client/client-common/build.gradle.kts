@@ -16,7 +16,7 @@ kotlin {
         getByName("commonMain").dependencies {
             api(project(":modules:common"))
             api(kotlin("stdlib-common"))
-            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serialization}")
+            api("org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.serialization}")
             api("io.ktor:ktor-client-auth:${Versions.ktor}")
             api("io.ktor:ktor-client-core:${Versions.ktor}")
             api("io.ktor:ktor-client-json:${Versions.ktor}")
@@ -25,7 +25,6 @@ kotlin {
 
         getByName("jvmMain").dependencies {
             api(kotlin("stdlib-jdk8"))
-            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.serialization}")
             api("io.ktor:ktor-client-auth-jvm:${Versions.ktor}")
             api("io.ktor:ktor-client-okhttp:${Versions.ktor}")
             api("io.ktor:ktor-client-json-jvm:${Versions.ktor}")
@@ -34,7 +33,6 @@ kotlin {
 
         getByName("jsMain").dependencies {
             api(kotlin("stdlib-js"))
-            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.serialization}")
             api("io.ktor:ktor-client-auth-js:${Versions.ktor}")
             api("io.ktor:ktor-client-js:${Versions.ktor}")
             api("io.ktor:ktor-client-json-js:${Versions.ktor}")
